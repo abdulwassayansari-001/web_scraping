@@ -1,0 +1,16 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <title>{% block title %}Web Scraping{% endblock %}</title>
+</head>
+
+<body>
+    <div id="content">
+        {% block body %}{% endblock body %}
+    </div>
+</body>
+</html>
+

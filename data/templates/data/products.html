@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<style>
+    #product-list{
+    margin: 10px;
+    text-decoration: none;
+    list-style: none;
+}
+
+#product-list li{
+    margin: 10px;
+    border: 1px solid black;
+    padding: 6px;
+    cursor: pointer;
+}
+
+</style>
+
+<html>
+<head>
+    <title>Product List</title>
+</head>
+<body>
+    <h1>Product List</h1>
+    <ul id="product-list">
+        <!-- Products will be displayed here -->
+    </ul>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: '/products/', // Specify the correct URL for your products view
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                var productData = JSON.parse(data.products);  // Parse the JSON string to a JavaScript array
+                var productList = $('#product-list');
+                $.each(productData, function(index, product) {
+                    var listItem = $('<li>');
+                    var productName = $('<p>').text(product.fields.name);
+                    var productPrice = $('<span>').text('$' + product.fields.price);
+                    listItem.append(productName, ' - ', productPrice);
+                    productList.append(listItem);
+                });
+            },
+            error: function() {
+                console.log('Failed to load product data.');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
+

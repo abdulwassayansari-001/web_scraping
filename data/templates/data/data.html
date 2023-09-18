@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Leadership Data</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<style>
+    #leadership-data td{
+        border: 1px solid rgb(67, 67, 67);
+        padding: 4px;
+    }
+</style>
+
+<body>
+
+    <a href="{% url 'data:accepted' %}">Accepted</a>
+    <a href="{% url 'data:rejected' %}">Rejected</a>
+
+    <h1>Leadership Data</h1>
+    <table id="leadership-table">
+        <th>No.</th>
+        <th>Name</th>
+        <th>Department</th>
+        <th>Title</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Validation</th>
+        <!-- <th>Validate</th> -->
+        <tbody id="leadership-data">
+            <!-- Table rows will be inserted here -->
+        </tbody>
+    </table>
+
+    <script>
+  
+            function loadData() {
+                $.ajax({
+                    url: '/get_data/',
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function (response) {
+                        const leadershipData = response.leadership_data;
+                        // Sort the data by ID
+                        leadershipData.sort((a, b) => a.id - b.id);
+                        const tableBody = $('#leadership-data');
+
+                        tableBody.empty();
+
+                        leadershipData.forEach(function (leader) {
+                            const row = `<tr>
+                                <td>${leader.id}</td>
+                                <td>${leader.name}</td>
+                                <td>${leader.dep}</td>
+                                <td>${leader.title}</td>
+                                <td>${leader.email}</td>
+                                <td>${leader.phone_number}</td>
+                                <td>${leader.validate}</td>
+                                <td>
+                                    <button class="validate_accept" data-id="${leader.id}">Accept</button>
+                                </td>
+                                <td>
+                                    <button class="validate_reject" data-id="${leader.id}">Reject</button>
+                                </td>
+                            </tr>`;
+                            tableBody.append(row);
+                        });
+
+                        // Add a click event listener to each row
+                        $('.validate_accept').click(function () {
+                            const id = $(this).data('id');
+                            acceptData(id);
+                        });
+
+                         // Add a click event listener to each row
+                         $('.validate_reject').click(function () {
+                            const id = $(this).data('id');
+                            rejectData(id);
+                        });
+                    },
+                    error: function (error) {
+                        console.error(error);
+                    }
+                });
+            }
+            // Initial load of data
+            loadData();
+   
+
+
+        function acceptData(id) {
+            // Send a GET request to Validate the data
+            $.ajax({
+                url: '/accepted_data/',
+                method: 'GET',
+                data: { id: id },
+                dataType: 'json',
+                success: function (data) {
+                    console.log('Data Validated:', data);
+                    loadData();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error('Error Validating Data:', errorThrown);
+                }
+            });
+        }
+
+        function rejectData(id) {
+            // Send a GET request to Validate the data
+            $.ajax({
+                url: '/rejected_data/',
+                method: 'GET',
+                data: { id: id },
+                dataType: 'json',
+                success: function (data) {
+                    console.log('Data Validated:', data);
+                    loadData();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error('Error Validating Data:', errorThrown);
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
