@@ -1,8 +1,12 @@
+{% extends "base.html" %}
+
+{% block body %}
+
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>Leadership Data</title>
+    <title>Department of Veterans Affairs</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
@@ -11,22 +15,21 @@
         border: 1px solid rgb(67, 67, 67);
         padding: 4px;
     }
+    th{
+        text-align: center;
+    }
 </style>
 
 <body>
 
-    <a href="{% url 'data:data' %}">Home</a>
-    <a href="{% url 'data:rejected' %}">Rejected</a>
-
-    <h1>Leadership Data</h1>
     <table id="leadership-table">
         <th>No.</th>
         <th>Name</th>
         <th>Department</th>
-        <th>Title</th>
+        <th>Designation</th>
         <th>Email</th>
         <th>Phone</th>
-        <th>Validation</th>
+        <th>Link</th>
         <!-- <th>Validate</th> -->
         <tbody id="leadership-data">
             <!-- Table rows will be inserted here -->
@@ -35,43 +38,36 @@
 
     <script>
   
-            function loadData() {
-                $.ajax({
-                    url: '/get_data/',
-                    method: 'GET',
-                    dataType: 'json',
-                    success: function (response) {
-                        const leadershipData = response.leadership_data;
-                        // Sort the data by ID
-                        leadershipData.sort((a, b) => a.id - b.id);
-                        const tableBody = $('#leadership-data');
-
-                        tableBody.empty();
-                        const acceptedData = leadershipData.filter(leadership_data => leadership_data.validate);
-                        acceptedData.forEach(function (leader) {
-                            const row = `<tr>
-                                <td>${leader.id}</td>
-                                <td>${leader.name}</td>
-                                <td>${leader.dep}</td>
-                                <td>${leader.title}</td>
-                                <td>${leader.email}</td>
-                                <td>${leader.phone_number}</td>
-                                <td>${leader.validate}</td>
-                                <td>
-                                    <button class="validate_accept" data-id="${leader.id}">Accept</button>
-                                </td>
-                                <td>
-                                    <button class="validate_reject" data-id="${leader.id}">Reject</button>
-                                </td>
-                            </tr>`;
-                            tableBody.append(row);
-                        });
-
-                        // Add a click event listener to each row
-                        $('.validate_accept').click(function () {
-                            const id = $(this).data('id');
-                            acceptData(id);
-                        });
+        function loadData() {
+            $.ajax({
+                url: '/get_data/',
+                method: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    const scrapData = response.scrap_data;
+                    // Sort the data by ID
+                    scrapData.sort((a, b) => a.id - b.id);
+                    const tableBody = $('#leadership-data');
+                    
+                    tableBody.empty();
+                    
+                    const acceptedData = scrapData.filter(scrap_data => scrap_data.validation);
+                    acceptedData.forEach(function (s_data) {
+                        const validationText = s_data.validation ? 'Accepted' : 'Rejected';
+                        const row = `<tr>
+                            <td>${s_data.id}</td>
+                            <td>${s_data.name}</td>
+                            <td>${s_data.dep}</td>
+                            <td>${s_data.designation}</td>
+                            <td>${s_data.email}</td>
+                            <td>${s_data.phone_number}</td>
+                            <td><a target=_blank href="${s_data.link}">${s_data.link}</a></td>
+                            <td>
+                                <button class="validate_reject btn btn-danger" data-id="${s_data.id}">Reject</button>
+                            </td>
+                        </tr>`;
+                        tableBody.append(row);
+                    });
 
                          // Add a click event listener to each row
                          $('.validate_reject').click(function () {
@@ -126,3 +122,5 @@
 </body>
 
 </html>
+
+{% endblock body %}

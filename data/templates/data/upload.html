@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block body %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSV Upload</title>
+</head>
+<body>
+    <div class="upload_div">
+        <div>
+            <h1>Upload a CSV File</h1>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input class="btn btn-secondary" type="file" name="file">
+                <button class="btn btn-primary" type="submit">Upload</button>
+            </form>
+        </div>
+    </div>
+    <div class="files_div">
+        <p>List of CSV files uploaded</p>
+        <ol class="list-group list-group-numbered">
+            {% for file in csv_files %}
+            <li class="list-group-item">{{ file.file_name }}</li>
+            {% endfor %}
+        </ol>
+    </div>
+
+</body>
+</html>
+
+{% endblock body %}

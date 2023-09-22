@@ -1,14 +1,15 @@
 from django.db import models
 
-class Products(models.Model):
-    name = models.CharField(max_length=255)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
 
-
-class Leadership(models.Model):
-    name = models.CharField(max_length=255)
+class DataScrap(models.Model):
+    name = models.CharField(max_length=255, null=True)
     dep = models.CharField(max_length=255, blank=True, null=True)
-    title = models.CharField(max_length=255, blank=True, null=True)
+    designation = models.CharField(max_length=255, blank=True, null=True)
     email = models.CharField(max_length=255, blank=True, null=True)
     phone_number = models.CharField(max_length=20, blank=True, null=True)
-    validate = models.BooleanField(default=False)
+    link = models.CharField(max_length=255, blank=True, null=True)
+    hierarchy = models.CharField(max_length=255, blank=True, null=True)
+    validation = models.BooleanField(default=False)
+
+class CSVFiles(models.Model):
+    file_name = models.CharField(max_length=255, null=True)
