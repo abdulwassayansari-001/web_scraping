@@ -7,7 +7,7 @@
 <html>
 
 <head>
-    <title>Department of Veterans Affairs</title>
+    <title>GovFinder</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
@@ -32,7 +32,8 @@
         <th>Email</th>
         <th>Phone</th>
         <th>Link</th>
-        <!-- <th>Validate</th> -->
+        <th>Hierarchy</th>
+        <th>Status</th>
         <tbody id="leadership-data">
             <!-- Table rows will be inserted here -->
         </tbody>
@@ -54,7 +55,9 @@
                         tableBody.empty();
 
                         scrapData.forEach(function (s_data) {
-                            const validationText = s_data.validation ? 'Accepted' : 'Rejected';
+                            const validationText = s_data.validation === true ? 'Accepted' :
+                                s_data.validation === false ? 'Rejected' :
+                                'Not Validated';
                             
                             const row = `<tr>
                                 <td>${s_data.id}</td>
@@ -64,6 +67,8 @@
                                 <td>${s_data.email}</td>
                                 <td>${s_data.phone_number}</td>
                                 <td><a target=_blank href="${s_data.link}">${s_data.link}</a></td>
+                                <td>${s_data.hierarchy}</td>
+                                <td>${validationText}</td>
                                 <td class="validate_button">
                                     <button class="validate_accept btn btn-success" data-id="${s_data.id}">Accept</button>
                                 </td>
@@ -72,7 +77,6 @@
                                 </td>
                             </tr>`;
                             tableBody.append(row);
-                            console.log(s_data.hierarchy)
                         });
 
                         // Add a click event listener to each row

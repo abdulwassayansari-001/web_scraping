@@ -24,7 +24,7 @@ def get_scrap_data(request):
         'phone_number': s_data.phone_number,
         'link':s_data.link,
         'hierarchy': s_data.hierarchy,
-        'validation': True
+        'validation': None
     } for s_data in scrap_data]
     return JsonResponse({'scrap_data': data})
 

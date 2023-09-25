@@ -165,6 +165,14 @@ nav{
     font-size: 13px;
 }
 
+#leadership-data td a{
+  text-overflow: ellipsis; 
+  white-space: nowrap; 
+  max-width: 330px; 
+  display: inline-block; 
+  overflow: hidden;
+}
+
 .validate_button{
   border: none;
 }
