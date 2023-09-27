@@ -7,3 +7,4 @@ django-storages
 selenium
 pandas
 gunicorn
+django_extensions

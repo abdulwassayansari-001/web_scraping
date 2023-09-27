@@ -128,7 +128,7 @@ def upload_csv(request):
                         phone_number=row[4],
                         link= row[5] ,
                         hierarchy= row[6],
-                        validation=True  # Assuming you want to set 'validation' to True for all rows
+                        validation=None  # Assuming you want to set 'validation' to True for all rows
                     )
             print(request.FILES['file'])
 
