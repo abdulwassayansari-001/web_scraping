@@ -33,7 +33,6 @@
         <th>Phone</th>
         <th>Link</th>
         <th>Hierarchy</th>
-        <th>Status</th>
         <tbody id="leadership-data">
             <!-- Table rows will be inserted here -->
         </tbody>
@@ -53,11 +52,8 @@
                         const tableBody = $('#leadership-data');
 
                         tableBody.empty();
-
-                        scrapData.forEach(function (s_data) {
-                            const validationText = s_data.validation === true ? 'Accepted' :
-                                s_data.validation === false ? 'Rejected' :
-                                'Not Validated';
+                        const nullData = scrapData.filter(scrap_data => scrap_data.validation === null);
+                        nullData.forEach(function (s_data) {
                             
                             const row = `<tr>
                                 <td>${s_data.id}</td>
@@ -68,7 +64,6 @@
                                 <td>${s_data.phone_number}</td>
                                 <td><a target=_blank href="${s_data.link}">${s_data.link}</a></td>
                                 <td>${s_data.hierarchy}</td>
-                                <td>${validationText}</td>
                                 <td class="validate_button">
                                     <button class="validate_accept btn btn-success" data-id="${s_data.id}">Accept</button>
                                 </td>
