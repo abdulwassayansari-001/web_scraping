@@ -180,6 +180,10 @@ nav{
     font-size: 13px;
 }
 
+#leadership-data img{
+  width: 80px;
+}
+
 #leadership-data td a{
   text-overflow: ellipsis; 
   white-space: nowrap; 
