@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CSV Upload</title>
+    <title>CSV Data</title>
 </head>
 <body>
     <div class="upload_div">
@@ -12,7 +12,7 @@
             <h1>Upload a CSV File</h1>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ form.as_p }}
+                {{ csv_form.as_p }}
                 <input class="btn btn-secondary" type="file" name="file">
                 <button class="btn btn-primary" type="submit">Upload</button>
             </form>

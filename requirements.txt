@@ -8,3 +8,4 @@ selenium
 pandas
 gunicorn
 django_extensions
+Pillow

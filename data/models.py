@@ -13,3 +13,6 @@ class DataScrap(models.Model):
 
 class CSVFiles(models.Model):
     file_name = models.CharField(max_length=255, null=True)
+
+class DataScrapImages(models.Model):
+    image = models.ImageField(upload_to='images/')

@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse, HttpResponse
-from .models import DataScrap, CSVFiles
+from .models import DataScrap, CSVFiles, DataScrapImages
 from django.core import serializers
 from django.forms.models import model_to_dict
 from django.views import View
-from .forms import CSVUploadForm
+from .forms import CSVUploadForm, ImageUploadForm
 import csv
 
 def data(request):
@@ -93,8 +93,8 @@ def rejected(request):
 
 def upload_csv(request):
     if request.method == 'POST':
-        form = CSVUploadForm(request.POST, request.FILES)
-        if form.is_valid():
+        csv_form = CSVUploadForm(request.POST, request.FILES)
+        if csv_form.is_valid():
             csv_file = request.FILES['file']
             csv_file_name = csv_file.name
 
@@ -134,13 +134,64 @@ def upload_csv(request):
 
             return redirect('data:success_page')
     else:
-        form = CSVUploadForm()
+        csv_form = CSVUploadForm()
 
     db_csv_files = CSVFiles.objects.all()
     
-    return render(request, 'data/upload.html', {'form': form,'csv_files':db_csv_files})
+    return render(request, 'data/upload.html', {'form': csv_form,'csv_files':db_csv_files})
 
 
 
 def success_page(request):
     return render(request, 'data/success.html')
+
+
+# def image_upload(request):
+#     if request.method == 'POST':
+#         form = ImageUploadForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('data:image_upload')  # Redirect to the image list page after successful upload
+#     else:
+#         form = ImageUploadForm()
+
+#     return render(request, 'data/upload.html', {'form': form})
+
+
+def image_list(request):
+    images = DataScrapImages.objects.all()
+    return render(request, 'data/image_list.html', {'images': images})
+
+
+import os
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from PIL import Image as PILImage
+from io import BytesIO
+
+def image_upload(request):
+    if request.method == 'POST':
+        img_form = ImageUploadForm(request.POST, request.FILES)
+        if img_form.is_valid():
+            # Get a list of uploaded files
+            files = request.FILES.getlist('files')
+            print(files)
+            # Define a list to store valid image files
+            valid_images = []
+
+            for file in files:
+                # Check if the file is an image (you can use file extensions for this)
+                if file.name.lower().endswith(('.jpg', '.jpeg', '.png', '.gif')):
+                    # If it's an image, save it to the list of valid images
+                    valid_images.append(file)
+
+            # Now, process and save the valid images
+            for img_file in valid_images:
+                # Save the image to the database or storage
+                DataScrapImages.objects.create(image=img_file)
+            
+            return redirect('data:image_list')  # Redirect to the image list page after successful upload
+    else:
+        img_form = ImageUploadForm()
+
+    return render(request, 'data/image_upload.html', {'form': img_form})
+
