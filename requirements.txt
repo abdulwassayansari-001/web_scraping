@@ -1,0 +1,11 @@
+Django==3.2.5
+django-environ==0.4.5
+psycopg2-binary==2.9.1
+google-cloud-secret-manager==2.5.0
+google-cloud-storage
+django-storages
+selenium
+pandas
+gunicorn
+django_extensions
+Pillow

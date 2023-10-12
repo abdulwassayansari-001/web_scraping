@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>GovFinder</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<style>
+    #leadership-data td{
+        border: 1px solid rgb(67, 67, 67);
+        padding: 4px;
+    }
+    th{
+        text-align: center;
+    }
+</style>
+
+<body>
+    <table id="leadership_table_accepted" class="leadership-table">
+        <th>No.</th>
+        <th>Images</th>
+        <th>Name</th>
+        <th>Department</th>
+        <th>Designation</th>
+        <th>Address</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Link</th>
+        <th>Description</th>
+        <th>Hierarchy</th>
+        <th>Status</th>
+        <tbody id="leadership_data_accepted" class="leadership-data">
+            <!-- Table rows will be inserted here -->
+        </tbody>
+    </table>
+
+    
+</body>
+<script>
+    filterHierarchy()
+</script>
+</html>
+
+{% endblock body %}
