@@ -12,125 +12,39 @@
 </head>
 
 <style>
-    th{
+    th {
         text-align: center;
     }
 </style>
 
 <body>
 
-    <!-- <a href="{% url 'data:accepted' %}">Accepted</a>
-    <a href="{% url 'data:rejected' %}">Rejected</a> -->
+      
 
-    {% block content %}{% endblock content %}
-    
-    <table id="leadership-table">
+    <table id="leadership-table" class="leadership-table">
         <th>No.</th>
+        <th>Images</th>
         <th>Name</th>
         <th>Department</th>
         <th>Designation</th>
+        <th>Address</th>
         <th>Email</th>
         <th>Phone</th>
         <th>Link</th>
+        <th>Description</th>
         <th>Hierarchy</th>
-        <tbody id="leadership-data">
+
+        <tbody id="leadership_data" class="leadership-data">
             <!-- Table rows will be inserted here -->
         </tbody>
     </table>
 
-    <script>
-  
-            function loadData() {
-                $.ajax({
-                    url: '/get_data/',
-                    method: 'GET',
-                    dataType: 'json',
-                    success: function (response) {
-                        const scrapData = response.scrap_data;
-                        // Sort the data by ID
-                        scrapData.sort((a, b) => a.id - b.id);
-                        const tableBody = $('#leadership-data');
-
-                        tableBody.empty();
-                        const nullData = scrapData.filter(scrap_data => scrap_data.validation === null);
-                        nullData.forEach(function (s_data) {
-                            
-                            const row = `<tr>
-                                <td>${s_data.id}</td>
-                                <td>${s_data.name}</td>
-                                <td>${s_data.dep}</td>
-                                <td>${s_data.designation}</td>
-                                <td>${s_data.email}</td>
-                                <td>${s_data.phone_number}</td>
-                                <td><a target=_blank href="${s_data.link}">${s_data.link}</a></td>
-                                <td>${s_data.hierarchy}</td>
-                                <td class="validate_button">
-                                    <button class="validate_accept btn btn-success" data-id="${s_data.id}">Accept</button>
-                                </td>
-                                <td class="validate_button">
-                                    <button class="validate_reject btn btn-danger" data-id="${s_data.id}">Reject</button>
-                                </td>
-                            </tr>`;
-                            tableBody.append(row);
-                        });
-
-                        // Add a click event listener to each row
-                        $('.validate_accept').click(function () {
-                            const id = $(this).data('id');
-                            acceptData(id);
-                        });
-
-                         // Add a click event listener to each row
-                         $('.validate_reject').click(function () {
-                            const id = $(this).data('id');
-                            rejectData(id);
-                        });
-                    },
-                    error: function (error) {
-                        console.error(error);
-                    }
-                });
-            }
-            // Initial load of data
-            loadData();
-   
-
-
-        function acceptData(id) {
-            // Send a GET request to Validate the data
-            $.ajax({
-                url: '/accepted_data/',
-                method: 'GET',
-                data: { id: id },
-                dataType: 'json',
-                success: function (data) {
-                    console.log('Data Validated:', data);
-                    loadData();
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.error('Error Validating Data:', errorThrown);
-                }
-            });
-        }
-
-        function rejectData(id) {
-            // Send a GET request to Validate the data
-            $.ajax({
-                url: '/rejected_data/',
-                method: 'GET',
-                data: { id: id },
-                dataType: 'json',
-                success: function (data) {
-                    console.log('Data Validated:', data);
-                    loadData();
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.error('Error Validating Data:', errorThrown);
-                }
-            });
-        }
-    </script>
 </body>
+
+<script>
+
+    filterHierarchy()
+</script>
 
 </html>
 

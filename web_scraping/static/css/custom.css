@@ -1,8 +1,11 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+
 body{
   min-width: fit-content !important;
 }
 
-body::-webkit-scrollbar{
+/* body::-webkit-scrollbar{
   width: 10px;
 }
 body::-webkit-scrollbar-track{
@@ -11,7 +14,7 @@ body::-webkit-scrollbar-track{
 
 body::-webkit-scrollbar-thumb{
   box-shadow: inset 0 0 10px rgba(68, 68, 68, 1) ;
-}
+} */
 
 nav{
     z-index: 9;
@@ -166,25 +169,29 @@ nav{
   }
 }
 
-#leadership-table{
+.leadership-table{
     margin: 40px 10px 10px 10px;
 }
-#leadership-table th{
+.leadership-table th{
     font-size: 15px;
     text-align: center !important;
 }
-#leadership-data td{
+.leadership-data td{
     border: 1px solid rgb(67, 67, 67);
     padding: 4px;
     text-align: center;
     font-size: 13px;
 }
 
-#leadership-data img{
+.leadership-data td:nth-child(8){
+ white-space: nowrap;
+}
+
+.leadership-data img{
   width: 80px;
 }
 
-#leadership-data td a{
+.leadership-data td a{
   text-overflow: ellipsis; 
   white-space: nowrap; 
   max-width: 330px; 
@@ -239,4 +246,19 @@ th{
 }
 .files_div ol:nth-child(2){
   background: rgb(214, 214, 214);
+}
+
+.filterDiv{
+  margin: 20px 0px 0px 10px;
+  /* background-color: aqua; */
+  font-family: 'Roboto', sans-serif;
+}
+
+.description {
+  max-height: 150px;
+  /* overflow: hidden; */
+  display: inline-block;
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-align: left;
 }

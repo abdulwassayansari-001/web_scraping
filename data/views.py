@@ -23,28 +23,57 @@ def get_scrap_data(request):
         'name': s_data.name,
         'dep': s_data.dep,
         'designation': s_data.designation,
+        'address': s_data.address,
         'email': s_data.email,
         'phone_number': s_data.phone_number,
         'link':s_data.link,
+        'desc':s_data.desc,
         'hierarchy': s_data.hierarchy,
+        'image_name': s_data.image_name,
         'validation': None
     } for s_data in scrap_data]
     return JsonResponse({'scrap_data': data})
 
 def get_data(request):
     scrap_data = DataScrap.objects.all()
-    data = [model_to_dict(s_data) for s_data in scrap_data]
-    data = [{
-        'id':s_data.id,
-        'name': s_data.name,
-        'dep': s_data.dep,
-        'designation': s_data.designation,
-        'email': s_data.email,
-        'phone_number': s_data.phone_number,
-        'link':s_data.link,
-        'hierarchy': s_data.hierarchy,
-        'validation': s_data.validation
-    } for s_data in scrap_data]
+    data = []
+
+    for s_data in scrap_data:
+        image_name = f"{s_data.name}{s_data.designation}"
+        matching_images = DataScrapImages.objects.filter(data_scrap=s_data, image__contains=image_name)
+        
+        if matching_images.exists():
+            data.append({
+                'id': s_data.id,
+                'name': s_data.name,
+                'dep': s_data.dep,
+                'designation': s_data.designation,
+                'address': s_data.address,
+                'email': s_data.email,
+                'phone_number': s_data.phone_number,
+                'link':s_data.link,
+                'desc':s_data.desc,
+                'hierarchy': s_data.hierarchy,
+                'image_name': s_data.image_name,
+                'validation': s_data.validation,
+            })
+
+        else:
+            data.append({
+                'id': s_data.id,
+                'name': s_data.name,
+                'dep': s_data.dep,
+                'designation': s_data.designation,
+                'address': s_data.address,
+                'email': s_data.email,
+                'phone_number': s_data.phone_number,
+                'link':s_data.link,
+                'desc':s_data.desc,
+                'hierarchy': s_data.hierarchy,
+                'image_name': s_data.image_name,
+                'validation': s_data.validation,
+            })
+
     return JsonResponse({'scrap_data': data})
 
 def accepted_data(request):
@@ -117,8 +146,6 @@ def upload_csv(request):
                     name=row[0],
                     dep=row[1],
                     designation=row[2],
-                    email=row[3],
-                    phone_number=row[4],
                 ).first()
 
                 if not existing_record:
@@ -127,10 +154,13 @@ def upload_csv(request):
                         name=row[0],
                         dep=row[1],
                         designation=row[2],
-                        email=row[3],
-                        phone_number=row[4],
-                        link= row[5] ,
-                        hierarchy= row[6],
+                        address = row[3],
+                        email=row[4],
+                        phone_number=row[5],
+                        link= row[6],
+                        desc = row[7],
+                        hierarchy= row[8],
+                        image_name = row[9],
                         validation=None  # Assuming you want to set 'validation' to True for all rows
                     )
             print(request.FILES['file'])
@@ -194,7 +224,7 @@ def image_upload(request):
                                 filename = os.path.basename(file)
 
                                 # Check if an image with the same name already exists in the database
-                                existing_image = DataScrapImages.objects.filter(image=filename).first()
+                                existing_image = DataScrapImages.objects.filter(image=f'images/{filename}').first()
 
                                 if not existing_image:
                                     # If it doesn't exist, save the image to the database

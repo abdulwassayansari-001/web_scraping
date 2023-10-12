@@ -17,6 +17,17 @@ services:
     restart: unless-stopped
     ports:
       - 8080:8080
+  minio:
+    image: minio/minio
+    container_name: minio
+    ports:
+      - "9000:9000"
+    environment:
+      - MINIO_ACCESS_KEY=myaccesskey
+      - MINIO_SECRET_KEY=mysecretkey
+    volumes:
+      - ./data:/data
+    command: server /data
       
 volumes:
   dbdata:
