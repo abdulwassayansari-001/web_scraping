@@ -21,8 +21,8 @@ def get_scrap_data(request):
     data = [{
         'id':s_data.id,
         'name': s_data.name,
-        'dep': s_data.dep,
         'designation': s_data.designation,
+        'dep': s_data.dep,
         'address': s_data.address,
         'email': s_data.email,
         'phone_number': s_data.phone_number,
@@ -40,8 +40,8 @@ def get_data(request):
     data = [{
         'id':s_data.id,
         'name': s_data.name,
-        'dep': s_data.dep,
         'designation': s_data.designation,
+        'dep': s_data.dep,
         'address': s_data.address,
         'email': s_data.email,
         'phone_number': s_data.phone_number,
@@ -121,16 +121,16 @@ def upload_csv(request):
                 # Check if a record with the same values already exists
                 existing_record = DataScrap.objects.filter(
                     name=row[0],
-                    dep=row[1],
-                    designation=row[2],
+                    designation=row[1],
+                    dep=row[2],
                 ).first()
 
                 if not existing_record:
                     # Create an instance of DataScrap with appropriate field values
                     DataScrap.objects.create(              
                         name=row[0],
-                        dep=row[1],
-                        designation=row[2],
+                        designation=row[1],
+                        dep=row[2],
                         address = row[3],
                         email=row[4],
                         phone_number=row[5],

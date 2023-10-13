@@ -120,8 +120,8 @@ function loadData(response) {
                 ${imageElement.outerHTML}
             </td>
             <td>${s_data.name}</td>
-            <td>${s_data.dep}</td>
             <td>${s_data.designation}</td>
+            <td>${s_data.dep}</td>
             <td>${s_data.address}</td>
             <td>${s_data.email}</td>
             <td>${s_data.phone_number}</td>
@@ -170,8 +170,8 @@ function loadAcceptedData(response) {
                 <img src="${imageUrl}" alt="${s_data.name}">
             </td>
             <td>${s_data.name}</td>
-            <td>${s_data.dep}</td>
             <td>${s_data.designation}</td>
+            <td>${s_data.dep}</td>
             <td>${s_data.address}</td>
             <td>${s_data.email}</td>
             <td>${s_data.phone_number}</td>
@@ -218,8 +218,8 @@ function loadRejectedData(response) {
                 <img src="${imageUrl}" alt="${s_data.name}">
             </td>
             <td>${s_data.name}</td>
-            <td>${s_data.dep}</td>
             <td>${s_data.designation}</td>
+            <td>${s_data.dep}</td>
             <td>${s_data.address}</td>
             <td>${s_data.email}</td>
             <td>${s_data.phone_number}</td>
