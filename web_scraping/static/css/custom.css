@@ -254,11 +254,10 @@ th{
   font-family: 'Roboto', sans-serif;
 }
 
-.description {
+/* .description {
   max-height: 150px;
-  /* overflow: hidden; */
   display: inline-block;
   overflow-x: hidden;
   overflow-y: auto;
   text-align: left;
-}
+} */

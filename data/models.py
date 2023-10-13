@@ -16,7 +16,3 @@ class DataScrap(models.Model):
 
 class CSVFiles(models.Model):
     file_name = models.CharField(max_length=255, null=True)
-
-class DataScrapImages(models.Model):
-    data_scrap = models.ForeignKey(DataScrap, on_delete=models.CASCADE, null=True)
-    image = models.ImageField(max_length=255, upload_to='images/')

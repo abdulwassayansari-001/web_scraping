@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
-from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
-from .models import DataScrap, CSVFiles, DataScrapImages
+from django.http import JsonResponse
+from .models import DataScrap, CSVFiles
 from django.core import serializers
 from django.forms.models import model_to_dict
 from django.views import View
-from .forms import CSVUploadForm, ImageUploadForm
+from .forms import CSVUploadForm
 import csv
 import os
 import zipfile
@@ -36,44 +36,21 @@ def get_scrap_data(request):
 
 def get_data(request):
     scrap_data = DataScrap.objects.all()
-    data = []
-
-    for s_data in scrap_data:
-        image_name = f"{s_data.name}{s_data.designation}"
-        matching_images = DataScrapImages.objects.filter(data_scrap=s_data, image__contains=image_name)
-        
-        if matching_images.exists():
-            data.append({
-                'id': s_data.id,
-                'name': s_data.name,
-                'dep': s_data.dep,
-                'designation': s_data.designation,
-                'address': s_data.address,
-                'email': s_data.email,
-                'phone_number': s_data.phone_number,
-                'link':s_data.link,
-                'desc':s_data.desc,
-                'hierarchy': s_data.hierarchy,
-                'image_name': s_data.image_name,
-                'validation': s_data.validation,
-            })
-
-        else:
-            data.append({
-                'id': s_data.id,
-                'name': s_data.name,
-                'dep': s_data.dep,
-                'designation': s_data.designation,
-                'address': s_data.address,
-                'email': s_data.email,
-                'phone_number': s_data.phone_number,
-                'link':s_data.link,
-                'desc':s_data.desc,
-                'hierarchy': s_data.hierarchy,
-                'image_name': s_data.image_name,
-                'validation': s_data.validation,
-            })
-
+    data = [model_to_dict(s_data) for s_data in scrap_data]
+    data = [{
+        'id':s_data.id,
+        'name': s_data.name,
+        'dep': s_data.dep,
+        'designation': s_data.designation,
+        'address': s_data.address,
+        'email': s_data.email,
+        'phone_number': s_data.phone_number,
+        'link':s_data.link,
+        'desc':s_data.desc,
+        'hierarchy': s_data.hierarchy,
+        'image_name': s_data.image_name,
+        'validation': s_data.validation
+    } for s_data in scrap_data]
     return JsonResponse({'scrap_data': data})
 
 def accepted_data(request):
@@ -177,67 +154,3 @@ def upload_csv(request):
 
 def success_page(request):
     return render(request, 'data/success.html')
-
-
-# def image_upload(request):
-#     if request.method == 'POST':
-#         form = ImageUploadForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('data:image_list')  # Redirect to the image list page after successful upload
-#     else:
-#         form = ImageUploadForm()
-
-#     return render(request, 'data/image_upload.html', {'form': form})
-
-
-def image_list(request):
-    images = DataScrapImages.objects.all()
-    return render(request, 'data/image_list.html', {'images': images})
-
-
-def image_upload(request):
-    if request.method == 'POST':
-        img_form = ImageUploadForm(request.POST, request.FILES)
-        if img_form.is_valid():
-            zip_file = img_form.cleaned_data.get('zip_file')  # Access 'zip_file' field correctly
-
-            if zip_file:
-                # Check if the uploaded file is a ZIP archive
-                if not zip_file.name.lower().endswith('.zip'):
-                    return HttpResponseBadRequest("Invalid file format. Please upload a ZIP archive.")
-
-                # Extract the ZIP archive to a temporary folder
-                with zipfile.ZipFile(zip_file, 'r') as archive:
-                    tmp_dir = tempfile.mkdtemp()
-                    archive.extractall(tmp_dir)
-
-                # Process and save the valid images from the extracted folder
-                for root, _, files in os.walk(tmp_dir):
-                    for file in files:
-                        file_path = os.path.join(root, file)
-                        with open(file_path, 'rb') as img_file:
-                            # Check if the file is an image
-                            if img_file.name.lower().endswith(('.jpg', '.jpeg', '.png', '.gif')):
-
-                                # Generate the image filename
-                                filename = os.path.basename(file)
-
-                                # Check if an image with the same name already exists in the database
-                                existing_image = DataScrapImages.objects.filter(image=f'images/{filename}').first()
-
-                                if not existing_image:
-                                    # If it doesn't exist, save the image to the database
-                                    image_instance = DataScrapImages(image=f'images/{filename}')
-                                    image_instance.save()
-                                else:
-                                    # If it exists, skip saving and print a message
-                                    print(f"Image with filename '{filename}' already exists. Skipping.")
-
-                return redirect('data:image_list')  # Make sure 'image_list' is defined in your urls.py
-
-    else:
-        img_form = ImageUploadForm()
-
-    return render(request, 'data/image_upload.html', {'img_form': img_form})
-
