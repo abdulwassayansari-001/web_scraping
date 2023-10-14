@@ -183,21 +183,27 @@ nav{
     font-size: 13px;
 }
 
-.leadership-data td:nth-child(8){
+/* .leadership-data td:nth-child(8){
  white-space: nowrap;
+} */
+
+.leadership-data td:nth-child(7){
+ word-wrap: break-word;
+ max-width: 100px;
+
 }
 
 .leadership-data img{
   width: 80px;
 }
 
-.leadership-data td a{
+/* .leadership-data td a{
   text-overflow: ellipsis; 
   white-space: nowrap; 
   max-width: 330px; 
   display: inline-block; 
   overflow: hidden;
-}
+} */
 
 .validate_button{
   border: none;
