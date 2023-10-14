@@ -166,3 +166,5 @@ data/images
 data/.minio.sys
 
 govfinder-backend.pem
+
+commands.txt
