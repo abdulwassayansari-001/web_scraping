@@ -193,6 +193,13 @@ nav{
 
 }
 
+.leadership-data td:nth-child(9){
+  word-wrap: break-word;
+  max-width: 300px;
+ 
+ }
+
+
 .leadership-data img{
   width: 80px;
 }
