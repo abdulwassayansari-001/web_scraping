@@ -107,10 +107,6 @@ def upload_csv(request):
             csv_file = request.FILES['file']
             csv_file_name = csv_file.name
 
-             # Save the file name in the CSVFiles model
-            csv_files_data = CSVFiles(file_name=csv_file_name)
-            csv_files_data.save()
-
             decoded_file = csv_file.read().decode('utf-8')
             csv_data = csv.reader(decoded_file.splitlines(), delimiter=',')
 
@@ -125,30 +121,44 @@ def upload_csv(request):
                     dep=row[2],
                 ).first()
 
-                if not existing_record:
-                    # Create an instance of DataScrap with appropriate field values
+                if existing_record:
+                    # Update the existing record with new data
+                    existing_record.address = row[3]
+                    existing_record.email = row[4]
+                    existing_record.phone_number = row[5]
+                    existing_record.link = row[6]
+                    existing_record.desc = row[7]
+                    existing_record.hierarchy = row[8]
+                    existing_record.image_name = row[9]
+                    existing_record.validation = True  # Assuming you want to set 'validation' to True for all rows
+                    existing_record.save()
+                else:
+                    # Create a new instance of DataScrap with appropriate field values
                     DataScrap.objects.create(              
                         name=row[0],
                         designation=row[1],
                         dep=row[2],
-                        address = row[3],
+                        address=row[3],
                         email=row[4],
                         phone_number=row[5],
-                        link= row[6],
-                        desc = row[7],
-                        hierarchy= row[8],
-                        image_name = row[9],
-                        validation=None  # Assuming you want to set 'validation' to True for all rows
+                        link=row[6],
+                        desc=row[7],
+                        hierarchy=row[8],
+                        image_name=row[9],
+                        validation=True  # Assuming you want to set 'validation' to True for all rows
                     )
-            print(request.FILES['file'])
+
+            # Save the file name in the CSVFiles model
+            csv_files_data = CSVFiles(file_name=csv_file_name)
+            csv_files_data.save()
 
             return redirect('data:success_page')
     else:
         csv_form = CSVUploadForm()
 
     db_csv_files = CSVFiles.objects.all()
-    
-    return render(request, 'data/upload.html', {'form': csv_form,'csv_files':db_csv_files})
+
+    return render(request, 'data/upload.html', {'form': csv_form, 'csv_files': db_csv_files})
 
 
 
