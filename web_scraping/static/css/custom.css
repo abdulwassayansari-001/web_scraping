@@ -168,7 +168,9 @@ nav{
     background-color: transparent;
   }
 }
-
+.container{
+  margin-left: 40px !important;
+}
 .leadership-table{
     margin: 40px 10px 10px 10px;
 }
