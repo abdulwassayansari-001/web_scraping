@@ -130,7 +130,7 @@ def upload_csv(request):
                     existing_record.desc = row[7]
                     existing_record.hierarchy = row[8]
                     existing_record.image_name = row[9]
-                    existing_record.validation = True  # Assuming you want to set 'validation' to True for all rows
+                    existing_record.validation = None 
                     existing_record.save()
                 else:
                     # Create a new instance of DataScrap with appropriate field values
@@ -145,7 +145,7 @@ def upload_csv(request):
                         desc=row[7],
                         hierarchy=row[8],
                         image_name=row[9],
-                        validation=True  # Assuming you want to set 'validation' to True for all rows
+                        validation=None
                     )
 
             # Save the file name in the CSVFiles model
