@@ -109,9 +109,9 @@ function loadData(response) {
 
         // Add an error event listener to replace the image with a placeholder if it fails to load
         imageElement.addEventListener('error', function () {
-            console.log('Image failed to load:', imageUrl);
+            // console.log('Image failed to load:', imageUrl);
             imageElement.src = placeholderImg;
-            console.log('Image source set to placeholder:', imageElement.src);
+            // console.log('Image source set to placeholder:', imageElement.src);
         });
         
         const row = `<tr>
