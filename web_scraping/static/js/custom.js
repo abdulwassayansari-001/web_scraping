@@ -1,3 +1,6 @@
+let ec2_ip = '13.127.104.212:8000'
+let placeholderImg = `http://${ec2_ip}/media/images/default.png`
+
 // Initially display the loader when the page loads
 $(document).ready(function(){
     document.getElementById('loader').style.display = 'block';
@@ -99,9 +102,7 @@ function loadData(response) {
         // // Construct the image URL
         const imageUrl = `http://localhost:9000/images/${s_data.image_name}`;
 
-        ec2_ip = '13.127.104.212:8000'
-
-        const placeholderImg = `http://${ec2_ip}/media/images/default.png`
+        // const placeholderImg = `http://${ec2_ip}/media/images/default.png`
 
         // Create an image element
         const imageElement = document.createElement('img');
@@ -165,12 +166,14 @@ function loadAcceptedData(response) {
     
     const acceptedData = scrapData.filter(scrap_data => scrap_data.validation);              
     acceptedData.forEach(function (s_data) {
-        const imageUrl = `http://localhost:9000/images/${s_data.image_name}`;
+
+        // const imageUrl = `http://localhost:9000/images/${s_data.image_name}`;
+
         const validationText = s_data.validation ? 'Accepted' : 'Rejected';
         const row = `<tr>
             <td>${s_data.id}</td>
             <td>
-                <img src="${imageUrl}" alt="${s_data.name}">
+                <img src="${placeholderImg}" alt="${s_data.name}">
             </td>
             <td>${s_data.name}</td>
             <td>${s_data.designation}</td>
@@ -213,12 +216,14 @@ function loadRejectedData(response) {
 
     const acceptedData = scrapData.filter(scrap_data => scrap_data.validation === false);
     acceptedData.forEach(function (s_data) {
-        const imageUrl = `http://localhost:9000/images/${s_data.image_name}`;
+
+        // const imageUrl = `http://localhost:9000/images/${s_data.image_name}`;
+        
         const validationText = s_data.validation ? 'Accepted' : 'Rejected';
         const row = `<tr>
             <td>${s_data.id}</td>
             <td>
-                <img src="${imageUrl}" alt="${s_data.name}">
+                <img src="${placeholderImg}" alt="${s_data.name}">
             </td>
             <td>${s_data.name}</td>
             <td>${s_data.designation}</td>
