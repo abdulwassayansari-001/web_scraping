@@ -99,7 +99,9 @@ function loadData(response) {
         // // Construct the image URL
         const imageUrl = `http://localhost:9000/images/${s_data.image_name}`;
 
-        const placeholderImg = `http://localhost:8000/media/images/default.png`
+        ec2_ip = 'http://13.127.104.212:8000/'
+
+        const placeholderImg = `http://${ec2_ip}/media/images/default.png`
 
         // Create an image element
         const imageElement = document.createElement('img');
