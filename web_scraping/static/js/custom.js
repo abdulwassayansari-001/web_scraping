@@ -45,13 +45,21 @@ function filter(response) {
     const allData = scrapData.filter(scrap_data => scrap_data);
 
     allData.forEach(function (s_data) {
-        const hierarchy = s_data.hierarchy;
-        uniqueHierarchies.add(hierarchy); // Use add() to add unique values to a Set
+
+         // Check which separator is present in the hierarchy
+         let hierarchySeparator = " --> ";
+         if (s_data.hierarchy.includes("→")) {
+             hierarchySeparator = " → ";
+         }
+        const hierarchyParts = s_data.hierarchy.split(hierarchySeparator).slice(0, 3);
+        const filteredHierarchy = hierarchyParts.join(hierarchySeparator);
+
+        uniqueHierarchies.add(filteredHierarchy); // Use add() to add unique values to a Set
     });
 
-    // Add options for each unique hierarchy to the dropdown
-    uniqueHierarchies.forEach(function (hierarchy) {
-        hierarchyFilterDropdown.append(`<option class="hierarchy_option" value="${hierarchy}">${hierarchy}</option>`);
+       // Add distinct hierarchy values to the dropdown
+    uniqueHierarchies.forEach(function (filteredHierarchy) {
+        hierarchyFilterDropdown.append(`<option class="hierarchy_option" value="${filteredHierarchy}">${filteredHierarchy}</option>`);
     });
 }
 
@@ -88,19 +96,14 @@ function loadData(response) {
     const nullData = scrapData.filter(scrap_data => scrap_data.validation === null);
     nullData.forEach(function (s_data) {
 
-        // // Replace spaces with hyphens in name and designation
-        // const sanitizedName = s_data.name.replace(/ /g, '-');
-        // const sanitizedDesignation = s_data.designation.replace(/ /g, '-');
-
         // // Construct the image URL
-        // const imageUrl = `http://localhost:9000/images/${sanitizedName}-${sanitizedDesignation}.jpg`;
         const imageUrl = `http://localhost:9000/images/${s_data.image_name}`;
 
         const placeholderImg = `http://localhost:8000/media/images/default.png`
 
         // Create an image element
         const imageElement = document.createElement('img');
-        imageElement.src = imageUrl;
+        imageElement.src = placeholderImg;
         imageElement.alt = `${s_data.name}'s Image`;
         imageElement.width = 100;
         imageElement.height = 100;
@@ -109,9 +112,7 @@ function loadData(response) {
 
         // Add an error event listener to replace the image with a placeholder if it fails to load
         imageElement.addEventListener('error', function () {
-            // console.log('Image failed to load:', imageUrl);
             imageElement.src = placeholderImg;
-            // console.log('Image source set to placeholder:', imageElement.src);
         });
         
         const row = `<tr>
