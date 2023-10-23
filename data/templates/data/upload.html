@@ -16,11 +16,11 @@
     <div class="upload_div">
         <div>
             <h1>Upload a CSV File</h1>
-            <form method="post" enctype="multipart/form-data">
+            <form method="post" enctype="multipart/form-data" id="csv-form">
                 {% csrf_token %}
                 {{ csv_form.as_p }}
                 <input class="btn btn-secondary" type="file" name="file">
-                <button class="btn btn-primary" type="submit">Upload</button>
+                <button class="btn btn-primary" type="submit" id="upload-button" disabled>Upload</button>
             </form>
         </div>
     </div>
@@ -34,6 +34,24 @@
     </div>
 
 </body>
+<script>
+    $(document).ready(function () {
+        // Function to check if the form is filled
+        function isFormFilled() {
+            // You can add more conditions to check other form fields if needed
+            return $.trim($("input[name='file']").val()) !== '';
+        }
+
+        // Enable the button when the form is filled
+        $("#csv-form").on("input", function () {
+            if (isFormFilled()) {
+                $("#upload-button").prop("disabled", false);
+            } else {
+                $("#upload-button").prop("disabled", true);
+            }
+        });
+    });
+</script>
 </html>
 
 {% endblock body %}
