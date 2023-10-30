@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
-from .models import DataScrap, CSVFiles
+from .models import DataScrap, CSVFiles, Feedback
 from django.core import serializers
 from django.forms.models import model_to_dict
 from django.views import View
-from .forms import CSVUploadForm
+from .forms import CSVUploadForm, FeedbackForm
 import csv
 import os
 import zipfile
@@ -36,21 +36,30 @@ def get_scrap_data(request):
 
 def get_data(request):
     scrap_data = DataScrap.objects.all()
-    data = [model_to_dict(s_data) for s_data in scrap_data]
-    data = [{
-        'id':s_data.id,
-        'name': s_data.name,
-        'designation': s_data.designation,
-        'dep': s_data.dep,
-        'address': s_data.address,
-        'email': s_data.email,
-        'phone_number': s_data.phone_number,
-        'link':s_data.link,
-        'desc':s_data.desc,
-        'hierarchy': s_data.hierarchy,
-        'image_name': s_data.image_name,
-        'validation': s_data.validation
-    } for s_data in scrap_data]
+    data = []
+
+    for s_data in scrap_data:
+        feedback = Feedback.objects.filter(data_scrap=s_data).first()
+        feedback_data = feedback.feedback_data if feedback else ""
+
+        data_entry = {
+            'id': s_data.id,
+            'name': s_data.name,
+            'designation': s_data.designation,
+            'dep': s_data.dep,
+            'address': s_data.address,
+            'email': s_data.email,
+            'phone_number': s_data.phone_number,
+            'link': s_data.link,
+            'desc': s_data.desc,
+            'hierarchy': s_data.hierarchy,
+            'image_name': s_data.image_name,
+            'validation': s_data.validation,
+            'feedback_data': feedback_data,
+        }
+
+        data.append(data_entry)
+
     return JsonResponse({'scrap_data': data})
 
 def accepted_data(request):
@@ -164,3 +173,19 @@ def upload_csv(request):
 
 def success_page(request):
     return render(request, 'data/success.html')
+
+def feedback_data(request, data_id):
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            feedback_text = form.cleaned_data['feedback_data']
+            # Update the Feedback model associated with the DataScrap
+            data_scrap = DataScrap.objects.get(id=data_id)
+            feedback, created = Feedback.objects.get_or_create(data_scrap=data_scrap)
+            feedback.feedback_data = feedback_text
+            print(f"Feedback '{feedback_text}' submitted on ID {data_scrap.id}")
+            feedback.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+    return JsonResponse({'success': False, 'errors': 'Invalid request method'})

@@ -16,6 +16,8 @@ urlpatterns = [
     path("rejected/", views.rejected, name='rejected'),
     path('upload/', views.upload_csv, name='upload_csv'),
     path('success/', views.success_page, name='success_page'),
+    path('feedback_data/<int:data_id>/', views.feedback_data, name='feedback_data'),
+
 ]
 
 # Serve media files during development

@@ -14,5 +14,9 @@ class DataScrap(models.Model):
     image_name = models.TextField(blank=True, null=True)
     validation = models.BooleanField(default=False, null=True)
 
+class Feedback(models.Model):
+    data_scrap = models.ForeignKey(DataScrap, on_delete=models.CASCADE)
+    feedback_data = models.TextField(blank=True, null=True)
+    
 class CSVFiles(models.Model):
     file_name = models.CharField(max_length=255, null=True)

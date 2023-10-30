@@ -132,27 +132,61 @@ function loadData(response) {
             <td><a target="_blank" href="${s_data.link}">${s_data.link}</a></td>
             <td class='description' >${s_data.desc}</td>
             <td>${s_data.hierarchy}</td>
+            
+            <td class="feedback">
+                <textarea class="textarea" id="feedback_${s_data.id}">${s_data.feedback_data}</textarea>
+            </td>
+
             <td class="validate_button">
-                <button class="validate_accept btn btn-success" data-id="${s_data.id}">Accept</button>
+                <button class="validate_accept submit_feedback btn btn-success" data-id="${s_data.id}">Accept</button>
             </td>
             <td class="validate_button">
-                <button class="validate_reject btn btn-danger" data-id="${s_data.id}">Reject</button>
+                <button class="validate_reject submit_feedback btn btn-danger" data-id="${s_data.id}">Reject</button>
             </td>
         </tr>`;
         loadDataTable.append(row);
-    });
 
-    // Add a click event listener to each row
-    $('.validate_accept').click(function () {
-        const id = $(this).data('id');
-        acceptData(id);
-    });
+        // Add a click event listener to each "Accept" button
+        $(`#leadership_data [data-id="${s_data.id}"].validate_accept`).click(function () {
+            const id = $(this).data('id');
+            acceptData(id);
+            const feedbackText = $(`#feedback_${id}`).val(); // Get the feedback text
+            console.log(feedbackText)
+            sendFeedback(id, feedbackText); // Send feedback data to the server
+        });
 
-    // Add a click event listener to each row
-    $('.validate_reject').click(function () {
-        const id = $(this).data('id');
-        rejectData(id);
+        // Add a click event listener to each "Reject" button
+        $(`#leadership_data [data-id="${s_data.id}"].validate_reject`).click(function () {
+            const id = $(this).data('id');
+            rejectData(id);
+            const feedbackText = $(`#feedback_${id}`).val(); // Get the feedback text
+            console.log(feedbackText)
+            sendFeedback(id, feedbackText); // Send feedback data to the server
+        });
     });
+}
+
+function sendFeedback(id, feedbackText) {
+    const url = `/feedback_data/${id}/`;
+    const formData = new FormData();
+    formData.append('feedback_data', feedbackText);
+
+    fetch(url, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': document.cookie.split('; ').find(c => c.startsWith('csrftoken')).split('=')[1],
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log('Feedback submitted successfully.');
+        } else {
+            console.log('Error: ' + data.errors);
+        }
+    })
+    .catch(error => console.error('Error:', error));
 }
 
 function loadAcceptedData(response) {
@@ -184,6 +218,7 @@ function loadAcceptedData(response) {
             <td><a target=_blank href="${s_data.link}">${s_data.link}</a></td>
             <td>${s_data.desc}</td>
             <td>${s_data.hierarchy}</td>
+            <td>${s_data.feedback_data}</td>
             <td>${validationText}</td>
             <td>
                 <button class="validate_reject btn btn-danger" data-id="${s_data.id}">Reject</button>
@@ -234,6 +269,7 @@ function loadRejectedData(response) {
             <td><a target=_blank href="${s_data.link}">${s_data.link}</a></td>
             <td>${s_data.desc}</td>
             <td>${s_data.hierarchy}</td>
+            <td>${s_data.feedback_data}</td>
             <td>${validationText}</td>
             <td>
                 <button class="validate_accept btn btn-success" data-id="${s_data.id}">Accept</button>
