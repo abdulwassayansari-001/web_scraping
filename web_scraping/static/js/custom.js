@@ -7,7 +7,7 @@ $(document).ready(function(){
 });
 
 // Call the fetchData function
-fetchData();
+// fetchData();
 
 function fetchData() {
     $.ajax({
@@ -29,7 +29,7 @@ function fetchData() {
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.error('Error fetching data:', errorThrown);
-            // If there's an error, schedule another check after 3 seconds
+            // If there's an error, schedule another check after 1 seconds
             setTimeout(fetchData, 1000);
         }
     });
