@@ -98,14 +98,17 @@ function loadData(response) {
 
     const nullData = scrapData.filter(scrap_data => scrap_data.validation === null);
     nullData.forEach(function (s_data) {
+        
+        // Remove both ".png", "webp" and ".jpg" extensions from s_data.image_name
+        const image_name = s_data.image_name.replace(/\.(png|jpg|webp)$/, '');
 
         // // Construct the image URL
-        const imageUrl = `https://gov-finder.s3.amazonaws.com/images/${s_data.image_name}`;
+        const imageUrl = `https://gov-finder.s3.amazonaws.com/images/${image_name}.png`;
         
         const row = `<tr>
             <td>${s_data.id}</td>
             <td class="images" >
-                <object width="100" height="100" data="${imageUrl}" type="image/jpeg">
+                <object width="100" height="100" data="${imageUrl}" type="image/png">
                     <img src="${placeholderImg}" />
                 </object>
             </td>
