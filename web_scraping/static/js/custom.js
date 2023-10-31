@@ -190,13 +190,17 @@ function loadAcceptedData(response) {
     const acceptedData = scrapData.filter(scrap_data => scrap_data.validation);              
     acceptedData.forEach(function (s_data) {
 
-        const imageUrl = `https://gov-finder.s3.amazonaws.com/images/${s_data.image_name}`;
+        // Remove both ".png", "webp" and ".jpg" extensions from s_data.image_name
+        const image_name = s_data.image_name.replace(/\.(png|jpg|webp)$/, '');
+
+        // // Construct the image URL
+        const imageUrl = `https://gov-finder.s3.amazonaws.com/images/${image_name}.png`;
 
         const validationText = s_data.validation ? 'Accepted' : 'Rejected';
         const row = `<tr>
             <td>${s_data.id}</td>
             <td class="images" >
-                <object width="100" height="100" data="${imageUrl}" type="image/jpeg">
+                <object width="100" height="100" data="${imageUrl}" type="image/png">
                     <img src="${placeholderImg}" />
                 </object>
             </td>
@@ -243,13 +247,17 @@ function loadRejectedData(response) {
     const acceptedData = scrapData.filter(scrap_data => scrap_data.validation === false);
     acceptedData.forEach(function (s_data) {
 
-        const imageUrl = `https://gov-finder.s3.amazonaws.com/images/${s_data.image_name}`;
+        // Remove both ".png", "webp" and ".jpg" extensions from s_data.image_name
+        const image_name = s_data.image_name.replace(/\.(png|jpg|webp)$/, '');
+
+        // // Construct the image URL
+        const imageUrl = `https://gov-finder.s3.amazonaws.com/images/${image_name}.png`;
         
         const validationText = s_data.validation ? 'Accepted' : 'Rejected';
         const row = `<tr>
             <td>${s_data.id}</td>
             <td class="images" >
-                <object width="100" height="100" data="${imageUrl}" type="image/jpeg">
+                <object width="100" height="100" data="${imageUrl}" type="image/png">
                     <img src="${placeholderImg}" />
                 </object>
             </td>
