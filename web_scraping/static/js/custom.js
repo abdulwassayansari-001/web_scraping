@@ -100,28 +100,14 @@ function loadData(response) {
     nullData.forEach(function (s_data) {
 
         // // Construct the image URL
-        const imageUrl = `http://localhost:9000/images/${s_data.image_name}`;
-
-        // const placeholderImg = `http://${ec2_ip}/media/images/default.png`
-
-        // Create an image element
-        const imageElement = document.createElement('img');
-        imageElement.src = placeholderImg;
-        imageElement.alt = `${s_data.name}'s Image`;
-        imageElement.width = 100;
-        imageElement.height = 100;
-        imageElement.className = 'images';
-
-
-        // Add an error event listener to replace the image with a placeholder if it fails to load
-        imageElement.addEventListener('error', function () {
-            imageElement.src = placeholderImg;
-        });
+        const imageUrl = `https://gov-finder.s3.amazonaws.com/images/${s_data.image_name}`;
         
         const row = `<tr>
             <td>${s_data.id}</td>
-            <td>
-                ${imageElement.outerHTML}
+            <td class="images" >
+                <object width="100" height="100" data="${imageUrl}" type="image/jpeg">
+                    <img src="${placeholderImg}" />
+                </object>
             </td>
             <td>${s_data.name}</td>
             <td>${s_data.designation}</td>
@@ -201,13 +187,15 @@ function loadAcceptedData(response) {
     const acceptedData = scrapData.filter(scrap_data => scrap_data.validation);              
     acceptedData.forEach(function (s_data) {
 
-        // const imageUrl = `http://localhost:9000/images/${s_data.image_name}`;
+        const imageUrl = `https://gov-finder.s3.amazonaws.com/images/${s_data.image_name}`;
 
         const validationText = s_data.validation ? 'Accepted' : 'Rejected';
         const row = `<tr>
             <td>${s_data.id}</td>
-            <td>
-                <img src="${placeholderImg}" alt="${s_data.name}">
+            <td class="images" >
+                <object width="100" height="100" data="${imageUrl}" type="image/jpeg">
+                    <img src="${placeholderImg}" />
+                </object>
             </td>
             <td>${s_data.name}</td>
             <td>${s_data.designation}</td>
@@ -252,13 +240,15 @@ function loadRejectedData(response) {
     const acceptedData = scrapData.filter(scrap_data => scrap_data.validation === false);
     acceptedData.forEach(function (s_data) {
 
-        // const imageUrl = `http://localhost:9000/images/${s_data.image_name}`;
+        const imageUrl = `https://gov-finder.s3.amazonaws.com/images/${s_data.image_name}`;
         
         const validationText = s_data.validation ? 'Accepted' : 'Rejected';
         const row = `<tr>
             <td>${s_data.id}</td>
-            <td>
-                <img src="${placeholderImg}" alt="${s_data.name}">
+            <td class="images" >
+                <object width="100" height="100" data="${imageUrl}" type="image/jpeg">
+                    <img src="${placeholderImg}" />
+                </object>
             </td>
             <td>${s_data.name}</td>
             <td>${s_data.designation}</td>
