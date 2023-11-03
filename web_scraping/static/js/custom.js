@@ -108,9 +108,7 @@ function loadData(response) {
         const row = `<tr>
             <td>${s_data.id}</td>
             <td class="images" >
-                <object width="100" height="100" data="${imageUrl}" type="image/png">
-                    <img src="${placeholderImg}" />
-                </object>
+                <img src="${imageUrl}" onerror="this.src='${placeholderImg}'" />
             </td>
             <td>${s_data.name}</td>
             <td>${s_data.designation}</td>
@@ -200,9 +198,7 @@ function loadAcceptedData(response) {
         const row = `<tr>
             <td>${s_data.id}</td>
             <td class="images" >
-                <object width="100" height="100" data="${imageUrl}" type="image/png">
-                    <img src="${placeholderImg}" />
-                </object>
+                <img src="${imageUrl}" onerror="this.src='${placeholderImg}'" />
             </td>
             <td>${s_data.name}</td>
             <td>${s_data.designation}</td>
@@ -257,9 +253,7 @@ function loadRejectedData(response) {
         const row = `<tr>
             <td>${s_data.id}</td>
             <td class="images" >
-                <object width="100" height="100" data="${imageUrl}" type="image/png">
-                    <img src="${placeholderImg}" />
-                </object>
+                <img src="${imageUrl}" onerror="this.src='${placeholderImg}'" />
             </td>
             <td>${s_data.name}</td>
             <td>${s_data.designation}</td>
