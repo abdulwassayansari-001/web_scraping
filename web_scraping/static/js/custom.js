@@ -1,13 +1,19 @@
 let ec2_ip = '13.127.104.212:8000'
 let placeholderImg = `http://${ec2_ip}/media/images/default.png`
+let nullDataElement = null
+let acceptedDataElement = null
+let rejectedDataElement = null
 
 // Initially display the loader when the page loads
 $(document).ready(function(){
     document.getElementById('loader').style.display = 'block';
+    nullDataElement = document.querySelector('#leadership_data');
+    acceptedDataElement = document.querySelector('#leadership_data_accepted');
+    rejectedDataElement = document.querySelector('#leadership_data_rejected');
 });
 
 // Call the fetchData function
-// fetchData();
+fetchData();
 
 function fetchData() {
     $.ajax({
@@ -18,9 +24,16 @@ function fetchData() {
             if ($.isPlainObject(response)) {
                 // If there is data, hide the loader and process the data
                 document.getElementById('loader').style.display = 'none';
-                loadData(response, '#leadership_data');
-                loadAcceptedData(response, '#leadership_data_accepted');
-                loadRejectedData(response, '#leadership_data_rejected');
+                if(nullDataElement){
+                    loadData(response, '#leadership_data');
+                }
+                if(acceptedDataElement){
+                    loadAcceptedData(response, '#leadership_data_accepted');
+                }
+                if(rejectedDataElement){
+                    loadRejectedData(response, '#leadership_data_rejected');
+
+                }
                 filter(response)
                 // filterHierarchy(response)
             } else {
@@ -35,7 +48,7 @@ function fetchData() {
     });
 }
 
-fetchData()
+// fetchData()
 // setTimeout(fetchData, 3000)
 
 function filter(response) {
@@ -97,6 +110,8 @@ function loadData(response) {
     loadDataTable.empty();
 
     const nullData = scrapData.filter(scrap_data => scrap_data.validation === null);
+    console.log("Unvalidated Data: " + nullData.length)
+
     nullData.forEach(function (s_data) {
         
         // Remove both ".png", "webp" and ".jpg" extensions from s_data.image_name
@@ -186,6 +201,8 @@ function loadAcceptedData(response) {
 
     
     const acceptedData = scrapData.filter(scrap_data => scrap_data.validation);              
+    console.log("Accepted Data:" + acceptedData.length)
+
     acceptedData.forEach(function (s_data) {
 
         // Remove both ".png", "webp" and ".jpg" extensions from s_data.image_name
@@ -240,8 +257,10 @@ function loadRejectedData(response) {
 
     loadDataRejectedTable.empty();
 
-    const acceptedData = scrapData.filter(scrap_data => scrap_data.validation === false);
-    acceptedData.forEach(function (s_data) {
+    const rejectedData = scrapData.filter(scrap_data => scrap_data.validation === false);
+    console.log("Rejected Data:" + rejectedData.length)
+    
+    rejectedData.forEach(function (s_data) {
 
         // Remove both ".png", "webp" and ".jpg" extensions from s_data.image_name
         const image_name = s_data.image_name.replace(/\.(png|jpg|webp)$/, '');
@@ -274,7 +293,7 @@ function loadRejectedData(response) {
     });
 
     // Show or hide the table based on whether there is data
-    if (acceptedData.length > 0) {
+    if (rejectedData.length > 0) {
         $('#leadership_table_rejected').show();
     } else {
         $('#leadership_table_rejected').hide();
