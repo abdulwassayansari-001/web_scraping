@@ -1,6 +1,6 @@
-{% extends "base.html" %}
+{% extends "layouts/base.html" %}
 
-{% block body %}
+{% block content %}
 
 <!DOCTYPE html>
 <html>
@@ -11,48 +11,64 @@
 </head>
 
 <style>
-    #leadership-data td{
+    #leadership-data td {
         border: 1px solid rgb(67, 67, 67);
         padding: 4px;
     }
-    th{
+
+    th {
         text-align: center;
     }
 </style>
 
 <body>
 
-    <div class="filterDiv">
-        <label for="hierarchyFilter">Filter by Hierarchy:</label>
-        <select onchange="filterHierarchy()" id="hierarchyFilter">
-            <!-- Options -->
-        </select>
-      </div>
+    {% block overlay %}
+    <div class="min-height-300 bg-primary position-absolute w-100"></div>
+    {% endblock overlay %}
 
-    <table id="leadership_table_accepted" class="leadership-table">
-        <th>No.</th>
-        <th>Image</th>
-        <th>Name</th>
-        <th>Designation</th>
-        <th>Department</th>
-        <th>Address</th>
-        <th>Email</th>
-        <th>Phone</th>
-        <th>Link</th>
-        <th>Description</th>
-        <th>Hierarchy</th>
-        <th>Feedback</th>
-        <th>Status</th>
-        <tbody id="leadership_data_accepted" class="leadership-data">
-            <!-- Table rows will be inserted here -->
-        </tbody>
-    </table>
 
-    
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card table_card">
+
+
+                    <div class="filterDiv">
+                        <label for="hierarchyFilter">Filter by Hierarchy:</label>
+                        <select onchange="filterHierarchy()" id="hierarchyFilter">
+                            <!-- Options -->
+                        </select>
+                    </div>
+
+                    <table id="leadership_table_accepted" class="leadership-table">
+                        <th>No.</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Designation</th>
+                        <th>Department</th>
+                        <th>Address</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Link</th>
+                        <th>Description</th>
+                        <th>Hierarchy</th>
+                        <th>Feedback</th>
+                        <th>Status</th>
+                        <tbody id="leadership_data_accepted" class="leadership-data">
+                            <!-- Table rows will be inserted here -->
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <script>
     filterHierarchy()
 </script>
+
 </html>
 
-{% endblock body %}
+{% endblock content %}

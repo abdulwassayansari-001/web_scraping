@@ -6,24 +6,23 @@ let rejectedDataElement = null
 
 // Initially display the loader when the page loads
 $(document).ready(function(){
-    document.getElementById('loader').style.display = 'none';
+    // document.getElementById('loader').style.display = 'none';
     nullDataElement = document.querySelector('#leadership_data');
     acceptedDataElement = document.querySelector('#leadership_data_accepted');
     rejectedDataElement = document.querySelector('#leadership_data_rejected');
 });
 
-// Call the fetchData function
-fetchData();
+
 
 function fetchData() {
     $.ajax({
-        url: '/get_data/',
+        url: '/data/get_data/',
         method: 'GET',
         dataType: 'json',
         success: function (response) {
             if ($.isPlainObject(response)) {
                 // If there is data, hide the loader and process the data
-                document.getElementById('loader').style.display = 'none';
+                // document.getElementById('loader').style.display = 'none';
                 if(nullDataElement){
                     loadData(response, '#leadership_data');
                 }
@@ -48,7 +47,7 @@ function fetchData() {
     });
 }
 
-// fetchData()
+fetchData()
 // setTimeout(fetchData, 3000)
 
 function filter(response) {
@@ -169,7 +168,7 @@ function loadData(response) {
 }
 
 function sendFeedback(id, feedbackText) {
-    const url = `/feedback_data/${id}/`;
+    const url = `/data/feedback_data/${id}/`;
     const formData = new FormData();
     formData.append('feedback_data', feedbackText);
 
@@ -309,7 +308,7 @@ function loadRejectedData(response) {
 function acceptData(id) {
     // Send a GET request to Validate the data
     $.ajax({
-        url: '/accepted_data/',
+        url: '/data/accepted_data/',
         method: 'GET',
         data: { id: id },
         dataType: 'json',
@@ -326,7 +325,7 @@ function acceptData(id) {
 function rejectData(id) {
     // Send a GET request to Validate the data
     $.ajax({
-        url: '/rejected_data/',
+        url: '/data/rejected_data/',
         method: 'GET',
         data: { id: id },
         dataType: 'json',
