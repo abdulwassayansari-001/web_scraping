@@ -10,11 +10,13 @@ import csv
 import os
 import zipfile
 import tempfile
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='/login/')
 def data(request):
     return render(request, 'data/data.html')
 
-
+@login_required(login_url='/login/')
 def get_scrap_data(request):
     scrap_data = DataScrap.objects.all()
     data = [model_to_dict(s_data) for s_data in scrap_data]
@@ -62,6 +64,8 @@ def get_data(request):
 
     return JsonResponse({'scrap_data': data})
 
+
+@login_required(login_url='/login/')
 def accepted_data(request):
     if request.method == "GET":
         id = request.GET.get("id")
@@ -82,9 +86,13 @@ def accepted_data(request):
         {"status": "error", "message": "Invalid request method."}, status=400
     )
 
+
+@login_required(login_url='/login/')
 def accepted(request):
     return render(request, 'data/accepted.html')
 
+
+@login_required(login_url='/login/')
 def rejected_data(request):
     if request.method == "GET":
         id = request.GET.get("id")
@@ -105,10 +113,14 @@ def rejected_data(request):
         {"status": "error", "message": "Invalid request method."}, status=400
     )
 
+
+
+@login_required(login_url='/login/')
 def rejected(request):
     return render(request, 'data/rejected.html')
 
 
+@login_required(login_url='/login/')
 def upload_csv(request):
     if request.method == 'POST':
         csv_form = CSVUploadForm(request.POST, request.FILES)
@@ -170,10 +182,12 @@ def upload_csv(request):
     return render(request, 'data/upload.html', {'form': csv_form, 'csv_files': db_csv_files})
 
 
-
+@login_required(login_url='/login/')
 def success_page(request):
     return render(request, 'data/success.html')
 
+
+@login_required(login_url='/login/')
 def feedback_data(request, data_id):
     if request.method == 'POST':
         form = FeedbackForm(request.POST)

@@ -6,7 +6,7 @@ let rejectedDataElement = null
 
 // Initially display the loader when the page loads
 $(document).ready(function(){
-    document.getElementById('loader').style.display = 'block';
+    document.getElementById('loader').style.display = 'none';
     nullDataElement = document.querySelector('#leadership_data');
     acceptedDataElement = document.querySelector('#leadership_data_accepted');
     rejectedDataElement = document.querySelector('#leadership_data_rejected');

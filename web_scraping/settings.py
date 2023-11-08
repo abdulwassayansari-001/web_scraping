@@ -54,6 +54,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'django_extensions',
     'data',
+    'users',
+    'crispy_forms',
+    "crispy_bootstrap4",
+
 ]
 
 MIDDLEWARE = [
@@ -165,3 +169,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # URL prefix for media files
 MEDIA_URL = '/media/'
+
+
+LOGIN_URL = "/login/"
+
+LOGIN_REDIRECT_URL = "/"
