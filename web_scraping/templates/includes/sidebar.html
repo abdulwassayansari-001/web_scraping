@@ -68,6 +68,36 @@
         </a>
       </li>
 
+      <li class="nav-item">
+          <a class="nav-link {% if app_label != app.label and app.url not in request.path|urlencode  %} collapsed{% endif %}" data-bs-toggle="collapse" data-bs-target="#submenu-{{ app.app_label }}" href="{{ app.url }}">
+            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-archive-2 text-warning text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Scraped Data</span>
+          </a>
+
+          <div class="multi-level ms-5 collapse {% if 'tables-bootstrap-' in segment or app_label == app.label or app.url in request.path|urlencode %} show {% endif %}" role="list" id="submenu-{{ app.app_label }}"                                                                                                       aria-expanded="{% if app_label == app.label or app.url in request.path|urlencode %}true{% else %}false{% endif %}">
+            <ul class="flex-column nav">
+                  <li class="nav-item{% if 'bootstrap-tables' in segment or model.url in request.path|urlencode %} active {% endif %} list-unstyled">
+                    <a class="nav-link" href="{% url 'data:data' %}">
+                      <span class="nav-link-text ms-1">Unvalidated</span>
+                    </a>
+                  </li>
+                  <li class="nav-item{% if 'bootstrap-tables' in segment or model.url in request.path|urlencode %} active {% endif %} list-unstyled">
+                    <a class="nav-link" href="{% url 'data:accepted' %}">
+                      <span class="nav-link-text ms-1">Accepted</span>
+                    </a>
+                  </li>
+                  <li class="nav-item{% if 'bootstrap-tables' in segment or model.url in request.path|urlencode %} active {% endif %} list-unstyled">
+                    <a class="nav-link" href="{% url 'data:rejected' %}">
+                      <span class="nav-link-text ms-1">Rejected</span>
+                    </a>
+                  </li>
+                  <li class="nav-item list-unstyled"></li>
+            </ul>
+          </div>
+      </li>
+
     {% if request.user.is_authenticated %}
       <li class="nav-item">
         <a class="nav-link " href="{% url 'tables' %}">
@@ -77,18 +107,6 @@
           <span class="nav-link-text ms-1">Tables</span>
         </a>
       </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="dataDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                <i class="ni ni-archive-2 text-warning text-sm opacity-10"></i>
-            </div>
-            <span class="nav-link-text ms-1">Data</span>
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="dataDropdown">
-            <li><a class="dropdown-item" href="#">Dropdown Item 1</a></li>
-            <li><a class="dropdown-item" href="#">Dropdown Item 2</a></li>
-        </ul>
-    </li>
       <li class="nav-item mt-3">
         <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>
       </li>
