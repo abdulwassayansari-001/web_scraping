@@ -57,7 +57,7 @@
 
       <li class="nav-item">
           {% if request.user.is_superuser %}
-          <a href="{% url 'admin:index' %}" class="nav-link {% if 'index' in segment %} active {% endif %}">
+          <a href="{% url 'index' %}" class="nav-link {% if 'index' in segment %} active {% endif %}">
           {% else %}
           <a href="{% url 'index' %}" class="nav-link {% if 'index' in segment %} active {% endif %}">
           {% endif %}

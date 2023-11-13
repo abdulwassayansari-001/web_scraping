@@ -4,7 +4,7 @@
 {% block title %} Home {% endblock title %}
 
 {% block overlay %}
-  <div class="min-height-300 bg-primary position-absolute w-100"></div>
+<div class="min-height-300 bg-primary position-absolute w-100"></div>
 {% endblock overlay %}
 
 
@@ -81,24 +81,118 @@
           <div class="row">
             <div class="col-8">
               <a href="{% url 'data:rejected' %}">
-                <div class="numbers">                 
+                <div class="numbers">
                   <p class="text-sm mb-0 text-uppercase font-weight-bold">Rejected</p>
                   <h5 class="font-weight-bolder">
                     {{total_rejected}}
                   </h5>
                 </div>
               </a>
+            </div>
+            <div class="col-4 text-end">
+              <div class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
+                <i class="ni ni-fat-remove text-lg opacity-10" aria-hidden="true"></i>
               </div>
-              <div class="col-4 text-end">
-                <div class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
-                  <i class="ni ni-fat-remove text-lg opacity-10" aria-hidden="true"></i>
-                </div>
-              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <div class="col-xl-6 mt-4">
+      <div class="card">
+        <div class="card-body p-3">
+          <div class="row">
+            <div class="col">
+              <canvas id="pieChart" width="400" height="200"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-6 mt-4">
+      <div class="card">
+        <div class="card-body p-3">
+          <div class="row">
+            <div class="col">
+              <canvas id="barChart" width="400" height="200"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
+
+<script>
+  // Load data from Django context
+  var total_unvalidated = {{ total_unvalidated }};
+  var total_accepted = {{ total_accepted }};
+  var total_rejected = {{ total_rejected }};
+  var total_items = {{ total_items }};
+
+  // Use Chart.js to render the pie chart
+  var ctx_pie = document.getElementById('pieChart').getContext('2d');
+  var pieChart = new Chart(ctx_pie, {
+    type: 'pie',
+    data: {
+      labels: ['Total Unvalidated', 'Total Accepted', 'Total Rejected'],
+      datasets: [{
+        data: [total_unvalidated, total_accepted, total_rejected],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+    }
+  });
+
+
+  var ctx_bar = document.getElementById('barChart').getContext('2d');
+  var barChart = new Chart(ctx_bar, {
+    type: 'bar',
+    data: {
+      labels: ['Total Items', 'Total Unvalidated', 'Total Accepted', 'Total Rejected'],
+      datasets: [{
+        label: 'Data Validation',
+        data: [total_items, total_unvalidated, total_accepted, total_rejected],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(255, 206, 86, 1)',
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks:{
+            stepSize: 1
+          }
+        }
+      }
+    }
+  });
+</script>
 
 {% endblock content %}
