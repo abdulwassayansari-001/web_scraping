@@ -1,0 +1,35 @@
+{% extends "layouts/base-fullscreen.html" %}
+
+{%block content%}
+
+<main class="main-content  mt-0">
+    <div class="page-header align-items-start min-vh-50 pt-5 pb-11 m-3 border-radius-lg"
+        style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signup-cover.jpg'); background-position: top;">
+        <span class="mask bg-gradient-dark opacity-6"></span>
+        <div class="container" style="height: auto;  margin-bottom: 0px; padding-bottom: 0px; border: 0px solid red;">
+
+
+            <div class="card">
+                <div class="col">
+                    <div class="container mt-8" >
+                        <h2 class="text-black mb-2 mt-2"
+                            style="text-align: center;">
+                            {{status}}
+                        </h2>
+                    </div>
+                    <hr style="background-color: rgb(0, 0, 0); width: 100%;">
+
+                    <div class="container" style="border: 0px solid;">
+                        <p class="text-lead text-black mb-6"
+                            style="text-align: center; font-size: calc(14px + .5vw);">
+                            Thank you for registering. An email has been sent to your address for verification. <br> <br>
+                            Please check your email and click the verification link to activate your account. <br>
+                            If you don't receive an email within a few minutes, please check your spam folder.
+                    </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{%endblock%}

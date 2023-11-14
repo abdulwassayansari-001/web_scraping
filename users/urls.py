@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from users import views
 from django.contrib.auth import views as auth_views
 
@@ -15,6 +15,9 @@ urlpatterns = [
     path('login/', views.UserLoginView.as_view(), name='login'),
     path('logout/', views.user_logout_view, name='logout'),
     path('register/', views.register, name='register'),
+
+ 
+
     path('password-change/', views.UserPasswordChangeView.as_view(), name='password_change'),
     path('password-change-done/', auth_views.PasswordChangeDoneView.as_view(
         template_name='accounts/password_change_done.html'

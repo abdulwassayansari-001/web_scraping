@@ -57,7 +57,8 @@ INSTALLED_APPS = [
     'users',
     'crispy_forms',
     "crispy_bootstrap4",
-    'admin_argon'
+    'admin_argon',
+    "verify_email.apps.VerifyEmailConfig",
 
 ]
 
@@ -171,7 +172,26 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # URL prefix for media files
 MEDIA_URL = '/media/'
 
+# login_page = "login"
 
 LOGIN_URL = "/login/"
 
 LOGIN_REDIRECT_URL = "/"
+
+# Email
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST='localhost'
+# EMAIL_PORT=1025
+# EMAIL_HOST_USER=""
+# EMAIL_HOST_PASSWORD=""
+# EMAIL_USE_TLS=False
+
+EMAIL_HOST='smtp.sendgrid.net'
+EMAIL_PORT=587
+EMAIL_HOST_USER='apikey'
+EMAIL_HOST_PASSWORD='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'
+DEFAULT_FROM_EMAIL='abdulwassay.cosmic@gmail.com'
+
+# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
+EMAIL_FIELD_NAME = 'email'

@@ -1,0 +1,33 @@
+{% extends "layouts/base-fullscreen.html" %}
+
+{%block content%}
+
+<main class="main-content  mt-0">
+    <div class="page-header align-items-start min-vh-50 pt-5 pb-11 m-3 border-radius-lg"
+        style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signup-cover.jpg'); background-position: top;">
+        <span class="mask bg-gradient-dark opacity-6"></span>
+        <div class="container" style="height: auto;  margin-bottom: 0px; padding-bottom: 0px; border: 0px solid red;">
+            <div class="card">
+                <div class="card-body">
+                    <div class="container mt-5">
+                        <h2 style="margin-bottom: 20px;">Request New Email for Verification</h2>
+                        <hr>
+                        <form method='POST'>
+                            {% csrf_token %}
+
+                            <fieldset style="text-transform: uppercase; width: 100%; max-width: 400px;">
+                                {{form}}
+                            </fieldset>
+
+                            <div style="margin-top: 50px;">
+                                <button class="btn btn-outline-dark" type="submit">Request New Email</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

@@ -1,34 +1,42 @@
 version: "3.9"
    
 services:
-  db:
-    image: postgres:14
-    restart: unless-stopped
-    volumes:
-      - dbdata:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+  # db:
+  #   image: postgres:14
+  #   restart: unless-stopped
+  #   volumes:
+  #     - dbdata:/var/lib/postgresql/data
+  #   environment:
+  #     - POSTGRES_DB=postgres
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=postgres
+  #   ports:
+  #     - 5432:5432
+  # adminer:
+  #   image: adminer
+  #   restart: unless-stopped
+  #   ports:
+  #     - 8080:8080
+  # minio:
+  #   image: minio/minio
+  #   container_name: minio
+  #   ports:
+  #     - "9000:9000"
+  #   environment:
+  #     - MINIO_ACCESS_KEY=myaccesskey
+  #     - MINIO_SECRET_KEY=mysecretkey
+  #   volumes:
+  #     - ./data:/data
+  #   command: server /data
+  mailhog:
+    image: mailhog/mailhog
+    logging:
+      driver: 'none'  # disable saving logs
     ports:
-      - 5432:5432
-  adminer:
-    image: adminer
-    restart: unless-stopped
-    ports:
-      - 8080:8080
-  minio:
-    image: minio/minio
-    container_name: minio
-    ports:
-      - "9000:9000"
-    environment:
-      - MINIO_ACCESS_KEY=myaccesskey
-      - MINIO_SECRET_KEY=mysecretkey
-    volumes:
-      - ./data:/data
-    command: server /data
+      - 1025:1025 # smtp server, match your local .env EMAIL_SMTP_PORT
+      - 8025:8025 # you can go to localhost:8025 to view the emails
       
-volumes:
-  dbdata:
-    driver: local
+      
+# volumes:
+#   dbdata:
+#     driver: local
