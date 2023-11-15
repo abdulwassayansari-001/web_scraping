@@ -5,7 +5,7 @@
     <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
     <a class="navbar-brand m-0" href="/">
       <img src="{% static 'img/logo-ct-dark.png' %}" class="navbar-brand-img h-100" alt="main_logo">
-      <span class="ms-1 font-weight-bold">{{request.user.first_name}} {{request.user.last_name}} {{request.user.email}}</span>
+      <span class="ms-1 font-weight-bold">{% if request.user.first_name %} {{request.user.first_name}} {{request.user.last_name}} {% else %} {{request.user.email}} {% endif %} </span>
     </a>
   </div>
   <hr class="horizontal dark mt-0">
@@ -76,7 +76,7 @@
             <span class="nav-link-text ms-1">Scraped Data</span>
           </a>
 
-          <div class="multi-level ms-5 collapse {% if 'tables-bootstrap-' in segment or app_label == app.label or app.url in request.path|urlencode %} show {% endif %}" role="list" id="submenu-{{ app.app_label }}"                                                                                                       aria-expanded="{% if app_label == app.label or app.url in request.path|urlencode %}true{% else %}false{% endif %}">
+          <div class="multi-level ms-5 collapse " role="list" id="submenu-{{ app.app_label }}"                                                                                                       aria-expanded="{% if app_label == app.label or app.url in request.path|urlencode %}true{% else %}false{% endif %}">
             <ul class="flex-column nav">
                   <li class="nav-item{% if 'bootstrap-tables' in segment or model.url in request.path|urlencode %} active {% endif %} list-unstyled">
                     <a class="nav-link" href="{% url 'data:data' %}">
@@ -100,11 +100,11 @@
 
     {% if request.user.is_authenticated %}
       <li class="nav-item">
-        <a class="nav-link " href="{% url 'tables' %}">
+        <a class="nav-link " href="{% url 'data:upload_csv' %}">
           <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
             <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
           </div>
-          <span class="nav-link-text ms-1">Tables</span>
+          <span class="nav-link-text ms-1">Upload Data</span>
         </a>
       </li>
       <li class="nav-item mt-3">

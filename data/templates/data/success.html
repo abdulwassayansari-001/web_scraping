@@ -1,6 +1,7 @@
-{% extends "base.html" %}
+{% extends "layouts/base.html" %}
+{% load static %}
 
-{% block body %}
+{% block content %}
 <!DOCTYPE html>
 <html>
 
@@ -18,11 +19,25 @@
     <title>Upload Successful</title>
 </head>
 <body>
+    {% block overlay %}
+    <div class="min-height-300 bg-primary position-absolute w-100"></div>
+    {% endblock overlay %}
+
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card table_card">
+
     <div class="success_div">
         <h1>Upload Successful</h1>
         <p>Your CSV file has been successfully uploaded and processed.</p>
     </div>
+
+    </div>
+</div>
+</div>
+</div>
 </body>
 </html>
 
-{% endblock body %}
+{% endblock content %}

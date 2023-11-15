@@ -1,39 +1,58 @@
-{% extends "base.html" %}
+{% extends "layouts/base.html" %}
+{% load static %}
 
-{% block body %}
+{% block content %}
 
 <style>
-    .filterDiv{
+    .filterDiv {
         display: none;
     }
-    .loader{
+
+    .loader {
         display: none !important;
     }
 </style>
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Upload CSV</title>
 </head>
+
 <body>
-    <div class="upload_div">
-        <div>
-            <h1>Upload a CSV File</h1>
-            <form method="post" enctype="multipart/form-data" id="csv-form">
-                {% csrf_token %}
-                {{ csv_form.as_p }}
-                <input class="btn btn-secondary" type="file" name="file">
-                <button class="btn btn-primary" type="submit" id="upload-button" disabled>Upload</button>
-            </form>
+    {% block overlay %}
+    <div class="min-height-300 bg-primary position-absolute w-100"></div>
+    {% endblock overlay %}
+
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card table_card">
+
+                    <div class="upload_div">
+                        <div>
+                            <h1>Upload a CSV File</h1>
+                            <form method="post" enctype="multipart/form-data" id="csv-form">
+                                {% csrf_token %}
+                                {{ csv_form.as_p }}
+                                <input class="btn btn-secondary" type="file" name="file">
+                                <button class="btn btn-primary" type="submit" id="upload-button"
+                                    disabled>Upload</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="files_div">
+                        <p>List of CSV files uploaded</p>
+                        <ol class="list-group list-group-numbered">
+                            {% for file in csv_files %}
+                            <li class="list-group-item">{{ file.file_name }}</li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="files_div">
-        <p>List of CSV files uploaded</p>
-        <ol class="list-group list-group-numbered">
-            {% for file in csv_files %}
-            <li class="list-group-item">{{ file.file_name }}</li>
-            {% endfor %}
-        </ol>
     </div>
 
 </body>
@@ -55,6 +74,7 @@
         });
     });
 </script>
+
 </html>
 
-{% endblock body %}
+{% endblock content %}

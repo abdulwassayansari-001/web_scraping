@@ -10,7 +10,10 @@ import csv
 import os
 import zipfile
 import tempfile
+import logging
 from django.contrib.auth.decorators import login_required
+
+logger = logging.getLogger(__name__)
 
 @login_required(login_url='/login/')
 def data(request):
@@ -134,6 +137,8 @@ def upload_csv(request):
             # Skip the header row
             next(csv_data)
 
+            data_count = 0
+
             for row in csv_data:
                 # Check if a record with the same values already exists
                 existing_record = DataScrap.objects.filter(
@@ -168,11 +173,19 @@ def upload_csv(request):
                         image_name=row[9],
                         validation=None
                     )
+                    data_count += 1
 
             # Save the file name in the CSVFiles model
             csv_files_data = CSVFiles(file_name=csv_file_name)
             csv_files_data.save()
 
+            # Get user
+            uploading_user = request.user.username
+
+            logger.info(f'User {uploading_user} uploaded CSV file {csv_file_name}')
+            logger.info(f'Total Uploaded Data: {data_count}')
+            
+            send_email_to_superuser(csv_file_name, data_count, uploading_user)
             return redirect('data:success_page')
     else:
         csv_form = CSVUploadForm()
@@ -203,3 +216,20 @@ def feedback_data(request, data_id):
         else:
             return JsonResponse({'success': False, 'errors': form.errors})
     return JsonResponse({'success': False, 'errors': 'Invalid request method'})
+
+
+from django.core.mail import send_mail
+from django.contrib.auth.models import User
+
+def send_email_to_superuser(file_name, data_count, uploading_user):
+    subject = 'CSV File Submitted'
+    message = f'The user {uploading_user} has uploaded a CSV file \nFile Name: {file_name} \nData Uploaded: {data_count}.'
+    from_email = os.environ.get("DEFAULT_FROM_EMAIL")
+    to_email = User.objects.filter(is_superuser=True).values_list('email', flat=True)
+
+    try:
+        send_mail(subject, message, from_email, to_email, fail_silently=False)
+        to_email_list = list(to_email)
+        logger.info(f'Successfully sent email to superuser {to_email_list} for CSV file: {file_name}')
+    except Exception as e:
+        logger.error(f'Failed to send email to superuser for CSV file: {file_name}. Error: {e}')
