@@ -34,33 +34,86 @@ def get_scrap_data(request):
     } for s_data in scrap_data]
     return JsonResponse({'scrap_data': data})
 
-def get_data(request):
-    scrap_data = DataScrap.objects.all()
-    data = []
+from django.core.paginator import Paginator, EmptyPage
+import logging
+from django.db.models import Q
 
-    for s_data in scrap_data:
-        feedback = Feedback.objects.filter(data_scrap=s_data).first()
-        feedback_data = feedback.feedback_data if feedback else ""
+def get_data(request, validation_status=None):
+    try:
+        # Fetch parameters sent by DataTables
+        draw = int(request.GET.get('draw', 1))
+        start = int(request.GET.get('start', 0))
+        length = int(request.GET.get('length', 10000))
+        end = start + length
+        validation_status = request.GET.get('validation_status')
 
-        data_entry = {
-            'id': s_data.id,
-            'name': s_data.name,
-            'designation': s_data.designation,
-            'dep': s_data.dep,
-            'address': s_data.address,
-            'email': s_data.email,
-            'phone_number': s_data.phone_number,
-            'link': s_data.link,
-            'desc': s_data.desc,
-            'hierarchy': s_data.hierarchy,
-            'image_name': s_data.image_name,
-            'validation': s_data.validation,
-            'feedback_data': feedback_data,
+        # Assuming you want to order by 'id', adjust this based on your requirements
+        order_column_index = int(request.GET.get('order[0][column]', 0))
+        order_direction = request.GET.get('order[0][dir]', '')
+        order_column_name = request.GET.get(f'columns[{order_column_index}][data]', 'id')
+        ordering = f"{'' if order_direction == 'asc' else '-'}{order_column_name}"
+
+        # Get the search value from the DataTables request
+        search_value = request.GET.get('search[value]', '')
+
+        # Define the filter conditions based on the columns you want to search
+        filter_conditions = Q(name__icontains=search_value) | Q(designation__icontains=search_value) | Q(dep__icontains=search_value)
+
+        if validation_status == 'null':
+            scrap_data = DataScrap.objects.filter(validation__isnull=True).filter(filter_conditions).order_by(ordering)
+        elif validation_status == 'true':
+            scrap_data = DataScrap.objects.filter(validation=True).filter(filter_conditions).order_by(ordering)
+        elif validation_status == 'false':
+            scrap_data = DataScrap.objects.filter(validation=False).filter(filter_conditions).order_by(ordering)
+        else:
+            # Default case: all data
+            print("default")
+            scrap_data = DataScrap.objects.filter(filter_conditions).order_by(ordering)
+
+        paginator = Paginator(scrap_data, length)
+        page = (start // length) + 1
+
+        try:
+            paginated_data = paginator.page(page)
+        except EmptyPage:
+            paginated_data = []
+
+        data = []
+
+        for s_data in paginated_data:
+            feedback = Feedback.objects.filter(data_scrap=s_data).first()
+            feedback_data = feedback.feedback_data if feedback else ""
+
+            data_entry = {
+                'id': s_data.id,
+                'name': s_data.name,
+                'designation': s_data.designation,
+                'dep': s_data.dep,
+                'address': s_data.address,
+                'email': s_data.email,
+                'phone_number': s_data.phone_number,
+                'link': s_data.link,
+                'desc': s_data.desc,
+                'hierarchy': s_data.hierarchy,
+                'image_name': s_data.image_name,
+                'validation': s_data.validation,
+                'feedback_data': feedback_data,
+            }
+
+            data.append(data_entry)
+
+        response = {
+            'draw': draw,
+            'recordsTotal': scrap_data.count(),
+            'recordsFiltered': scrap_data.count(),
+            'data': data,
         }
 
-        data.append(data_entry)
+        return JsonResponse(response)
+    except Exception as e:
+        logging.error(f"Error in get_data view: {e}")
+        return JsonResponse({'error': 'An error occurred while processing the request.'}, status=500)
 
-    return JsonResponse({'scrap_data': data})
 
 def accepted_data(request):
     if request.method == "GET":

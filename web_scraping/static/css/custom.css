@@ -173,6 +173,7 @@ nav{
 }
 .leadership-table{
     margin: 40px 10px 10px 10px;
+    max-width: 1200px !important;
 }
 .leadership-table th{
     font-size: 15px;

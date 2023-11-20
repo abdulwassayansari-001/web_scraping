@@ -9,6 +9,19 @@
 <head>
     <title>GovFinder</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Include DataTables CSS and JS from CDN -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/plug-ins/1.13.7/features/searchHighlight/dataTables.searchHighlight.css">
+
+  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+  <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+  <script src="https://bartaz.github.io/sandbox.js/jquery.highlight.js"></script>
+  <script src="https://cdn.datatables.net/plug-ins/1.13.7/features/searchHighlight/dataTables.searchHighlight.min.js"></script>
+
 </head>
 
 <style>
@@ -30,38 +43,50 @@
 </style>
 
 <body>
-    <div class="filterDiv">
+    <!-- <div class="filterDiv">
         <label for="hierarchyFilter">Filter by Hierarchy:</label>
         <select onchange="filterHierarchy()" id="hierarchyFilter">
-            <!-- Options -->
+           
         </select>
-      </div>
+      </div> -->
       
+<div class="container mt-10">
+<!-- 
+    <label for="lengthSelect">Show entries:</label>
+<select id="lengthSelect">
+    <option value="10">10</option>
+    <option value="25">25</option>
+    <option value="50">50</option>
+    <option value="100">100</option>
+    <option value="500" selected >500</option>
+    <option value="1000" >1000</option>
+</select> -->
 
-    <table id="leadership-table" class="leadership-table">
-        <th>No.</th>
-        <th>Image</th>
-        <th>Name</th>
-        <th>Designation</th>
-        <th>Department</th>
-        <th>Address</th>
-        <th>Email</th>
-        <th>Phone</th>
-        <th>Link</th>
-        <th>Description</th>
-        <th>Hierarchy</th>
-        <th>Feedback</th>
-
-        <tbody id="leadership_data" class="leadership-data">
-            <!-- Table rows will be inserted here -->
-        </tbody>
-    </table>
+    <table id="leadership-table" class="null_data center table table-striped cell-border display compact" style="width: 100%;">
+        <!-- <th>No.</th>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Designation</th>
+            <th>Department</th>
+            <th>Address</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Link</th>
+            <th>Description</th>
+            <th>Hierarchy</th>
+            <th>Feedback</th>
+            
+            <tbody id="leadership_data" class="leadership-data">
+                
+            </tbody> -->
+        </table>
+    </div>
 
 </body>
 
 <script>
 
-    filterHierarchy()
+    // filterHierarchy()
 </script>
 
 </html>
