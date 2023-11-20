@@ -171,19 +171,40 @@ nav{
 .container{
   margin-left: 40px !important;
 }
-.leadership-table{
-    margin: 40px 10px 10px 10px;
-    max-width: 1200px !important;
+#leadership-table{
+    font-size: 12px !important;
+}
+.table thead tr th{
+  font-size: 13px !important;
+  text-align: center !important;
+}
+.table tbody td{
+  text-align: center;
 }
 .leadership-table th{
     font-size: 15px;
     text-align: center !important;
+}
+.container{
+  width: 100% !important;
+  /* margin: 10px 0px 0px 10px !important; */
+  margin: 0 auto !important;
+}
+#leadership-table_wrapper{
+  margin-top: 20px;
 }
 .leadership-data td{
     border: 1px solid rgb(67, 67, 67);
     padding: 4px;
     text-align: center;
     font-size: 13px;
+}
+
+.desc_class{
+  width: 300px;
+}
+.hierarchy_class{
+  width: 180px !important;
 }
 
 /* .leadership-data td:nth-child(8){

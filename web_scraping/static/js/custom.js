@@ -8,13 +8,6 @@ let dataTable;
 $(document).ready(function () {
     // Initially display the loader when the page loads
     document.getElementById('loader').style.display = 'none';
-
-    // // Initialize DataTable when the page loads
-    // initDataTable([]);
-
-    // // Fetch initial data
-    // fetchData();
-
 });
 
 $(document).ready(function () {
@@ -46,38 +39,6 @@ $(document).ready(function () {
     }
 });
 
-
-// function fetchData() {
-//     const length = 100; // Set your default items per page
-//     const draw = 2; // Set the initial draw value
-
-//     $.ajax({
-//         url: `/get_data/?length=${length}&draw=${draw}`,
-//         method: 'GET',
-//         dataType: 'json',
-//     })
-//         .done(function (response) {
-//             handleData(response);
-//         })
-//         .fail(function (jqXHR, textStatus, errorThrown) {
-//             console.error('Error fetching data:', errorThrown);
-//             // If there's an error, schedule another check after 1 second
-//             setTimeout(fetchData, 1000);
-//         });
-// }
-
-// function handleData(response) {
-//     if ($.isPlainObject(response)) {
-//         // If there is data, hide the loader and process the data
-//         document.getElementById('loader').style.display = 'none';
-//         // loadData(response);
-//         // loadAcceptedData(response);
-//         // loadRejectedData(response);
-//     } else {
-//         console.error('Invalid JSON data received:', response);
-//     }
-// }
-
 // Function to initialize DataTable
 function initDataTable(validationStatus) {
 
@@ -87,48 +48,51 @@ function initDataTable(validationStatus) {
     }
 
     dataTable = $('#leadership-table').DataTable({
+        "dom": '<"top"f<"clear">><"top"lip<"clear">>rt<"bottom"ip<"clear">>',
+        scrollX: true,
         serverSide: true,
+        
         ajax: {
             url: `/get_data/?validation_status=${validationStatus}`, 
             type: 'GET',
             dataType: 'json',
         },
-        pageLength: 10,  // Set the number of records per page
+        pageLength: 100,  // Set the number of records per page
         columns: [
-            { data: 'id' },
-            { data: 'image_name', render: function (data, type, row) {
+            { data: 'id',  title: 'ID' },
+            { data: 'image_name',title: 'Image', render: function (data, type, row) {
                 const imageUrl = `https://gov-finder.s3.amazonaws.com/images/${data.replace(/\.(png|jpg|webp)$/, '')}.png`;
-                return `<img style="width:100px;" src="${imageUrl}" onerror="this.src='${placeholderImg}'" />`;
+                return `<img style="width:80px;" src="${imageUrl}" onerror="this.src='${placeholderImg}'" />`;
             }},
-            { data: 'name' },
-            { data: 'designation' },
-            { data: 'dep' },
-            { data: 'address' },
-            { data: 'email' },
-            { data: 'phone_number' },
+            { data: 'name',  title: 'Name' },
+            { data: 'designation',  title: 'Designation' },
+            { data: 'dep',  title: 'Department' },
+            { data: 'address',  title: 'Address' },
+            { data: 'email',  title: 'Email' },
+            { data: 'phone_number',  title: 'Phone' },
             {
-                data: 'link',
+                data: 'link',  title: 'Link',
                 render: function (data, type, row) {
                     return `<a target="_blank" href="${data}">${data}</a>`;
                 }
             },
-            { data: 'desc' },
-            { data: 'hierarchy' },
-            { data: 'validation' },
+            { data: 'desc',  title: 'Description' },
+            { data: 'hierarchy',  title: 'Hierarchy' },
+            { data: 'validation',  title: 'Status' },
             {
-                data: 'feedback_data',
+                data: 'feedback_data',  title: 'Feedback',
                 render: function (data, type, row) {
                     return `<textarea class="textarea" id="feedback_${row.id}">${data}</textarea>`;
                 }
             },
             {
-                data: 'id',
+                data: 'id',  title: 'Accept',
                 render: function (data, type, row) {
                     return `<button class="validate_accept submit_feedback btn btn-success" data-id="${data}">Accept</button>`;
                 }
             },
             {
-                data: 'id',
+                data: 'id',  title: 'Reject',
                 render: function (data, type, row) {
                     return `<button class="validate_reject submit_feedback btn btn-danger" data-id="${data}">Reject</button>`;
                 }
@@ -141,19 +105,35 @@ function initDataTable(validationStatus) {
             smart: true,  // Enable smart search
             regex: true,  // Enable regular expression search
         },
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+            // Add more buttons as needed, see documentation for available options
+        ],
         columnDefs: [
             {
                 search: 'applied',
                 regex: true,
-                targets: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11],  // Adjust column indices as needed
+                targets: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],  // Adjust column indices as needed
+            },
+            {
+                targets: [9], 
+                className: 'desc_class',
+            },
+            {
+                targets: [10], 
+                className: 'hierarchy_class',
             },
         ],
-
+        lengthMenu: [
+            [ 100, 200, 500, 1000 ],
+            [ '100', '200', '500', '1000']
+        ],
         // Additional DataTable options can be added here
     });
 
     // Add the draw event listener for search highlighting
     dataTable.on('draw', function () {
+        console.log('DataTable initialized.');
         var body = $(dataTable.table().body());
         body.unhighlight();
         body.highlight(dataTable.search());
@@ -162,94 +142,7 @@ function initDataTable(validationStatus) {
 
 
 
-// $(document).ready(function () {
-//     initDataTable('null');
-// });
-
-// function loadData(response) {
-//     const scrapData = response.data;
-//     console.log(scrapData)
-//     // Sort the data by ID
-//     scrapData.sort((a, b) => a.id - b.id);
-//     console.log(scrapData)
-
-//     const nullData = scrapData.filter(scrap_data => scrap_data.validation === null);
-//     console.log("Unvalidated Data: " + nullData.length);
-
-//     // Initialize DataTable
-//     initDataTable(nullData);
-
-//     // Add a click event listener to each "Accept" button
-//     $(`#leadership_data [data-id].validate_accept`).click(function () {
-//         const id = $(this).data('id');
-//         acceptData(id);
-//         const feedbackText = $(`#feedback_${id}`).val(); // Get the feedback text
-//         console.log(feedbackText)
-//         sendFeedback(id, feedbackText); // Send feedback data to the server
-//     });
-
-//     // Add a click event listener to each "Reject" button
-//     $(`#leadership_data [data-id].validate_reject`).click(function () {
-//         const id = $(this).data('id');
-//         rejectData(id);
-//         const feedbackText = $(`#feedback_${id}`).val(); // Get the feedback text
-//         console.log(feedbackText)
-//         sendFeedback(id, feedbackText); // Send feedback data to the server
-//     });
-// }
-
-
-// function filter(response) {
-//     const scrapData = response.scrap_data;
-//     scrapData.sort((a, b) => a.id - b.id);
-
-//     const uniqueHierarchies = new Set();
-//     const hierarchyFilterDropdown = $('#hierarchyFilter'); // Create the dropdown dynamically
-//     hierarchyFilterDropdown.empty().append('<option value="">All</option>'); // Add the "All" option as the default
-//     const allData = scrapData.filter(scrap_data => scrap_data);
-
-//     allData.forEach(function (s_data) {
-
-//          // Check which separator is present in the hierarchy
-//          let hierarchySeparator = " --> ";
-//          if (s_data.hierarchy.includes("→")) {
-//              hierarchySeparator = " → ";
-//          }
-//         const hierarchyParts = s_data.hierarchy.split(hierarchySeparator).slice(0, 3);
-//         const filteredHierarchy = hierarchyParts.join(hierarchySeparator);
-
-//         uniqueHierarchies.add(filteredHierarchy); // Use add() to add unique values to a Set
-//     });
-
-//        // Add distinct hierarchy values to the dropdown
-//     uniqueHierarchies.forEach(function (filteredHierarchy) {
-//         hierarchyFilterDropdown.append(`<option class="hierarchy_option" value="${filteredHierarchy}">${filteredHierarchy}</option>`);
-//     });
-// }
-
-// function filterHierarchy() {
-//     var input, filter, table, tr, td, i;
-//     input = document.getElementById("hierarchyFilter");
-//     filter = input.value;
-//     table = document.querySelector(".leadership-data");
-//     tr = table.getElementsByTagName("tr");
-//     for (i = 0; i < tr.length; i++) {
-//         td = tr[i].getElementsByTagName("td")[10];
-//         if (td) {
-//             var decodedHierarchy = td.innerHTML;
-//             var temp = document.createElement("div");
-//             temp.innerHTML = decodedHierarchy;
-//             decodedHierarchy = temp.textContent || temp.innerText;
-//             if (decodedHierarchy.indexOf(filter) > -1) {
-//                     tr[i].style.display = "";
-//             } else {
-//                 tr[i].style.display = "none";
-//             }
-//         }
-//     }
-// }
-
-function sendFeedback(id, feedbackText) {
+function sendFeedback(id, feedbackText, callback) {
     const url = `/feedback_data/${id}/`;
     const formData = new FormData();
     formData.append('feedback_data', feedbackText);
@@ -265,6 +158,8 @@ function sendFeedback(id, feedbackText) {
     .then(data => {
         if (data.success) {
             console.log('Feedback submitted successfully.');
+            // Call the callback function to update the DataTable row
+            callback();
         } else {
             console.log('Error: ' + data.errors);
         }
@@ -272,121 +167,25 @@ function sendFeedback(id, feedbackText) {
     .catch(error => console.error('Error:', error));
 }
 
-// function loadAcceptedData(response) {
-//     const scrapData = response.scrap_data;
-//     // Sort the data by ID
-//     scrapData.sort((a, b) => a.id - b.id);
-//     const loadDataAcceptedTable = $('#leadership_data_accepted');
-    
-//     loadDataAcceptedTable.empty();
 
-    
-//     const acceptedData = scrapData.filter(scrap_data => scrap_data.validation);              
-//     console.log("Accepted Data:" + acceptedData.length)
 
-//     acceptedData.forEach(function (s_data) {
-
-//         // Remove both ".png", "webp" and ".jpg" extensions from s_data.image_name
-//         const image_name = s_data.image_name.replace(/\.(png|jpg|webp)$/, '');
-
-//         // // Construct the image URL
-//         const imageUrl = `https://gov-finder.s3.amazonaws.com/images/${image_name}.png`;
-
-//         const validationText = s_data.validation ? 'Accepted' : 'Rejected';
-//         const row = `<tr>
-//             <td>${s_data.id}</td>
-//             <td class="images" >
-//                 <img src="${imageUrl}" onerror="this.src='${placeholderImg}'" />
-//             </td>
-//             <td>${s_data.name}</td>
-//             <td>${s_data.designation}</td>
-//             <td>${s_data.dep}</td>
-//             <td>${s_data.address}</td>
-//             <td>${s_data.email}</td>
-//             <td>${s_data.phone_number}</td>
-//             <td><a target=_blank href="${s_data.link}">${s_data.link}</a></td>
-//             <td>${s_data.desc}</td>
-//             <td>${s_data.hierarchy}</td>
-//             <td>${s_data.feedback_data}</td>
-//             <td>${validationText}</td>
-//             <td>
-//                 <button class="validate_reject btn btn-danger" data-id="${s_data.id}">Reject</button>
-//             </td>
-//         </tr>`;
-//         loadDataAcceptedTable.append(row);
-//     });
-
-//         // Show or hide the table based on whether there is data
-//         if (acceptedData.length > 0) {
-//         $('#leadership_table_accepted').show();
-//     } else {
-//         $('#leadership_table_accepted').hide();
-//     }
-//     }
-
-// function loadRejectedData(response) {
-//     const scrapData = response.scrap_data;
-//     // Sort the data by ID
-//     scrapData.sort((a, b) => a.id - b.id);
-//     const loadDataRejectedTable = $('#leadership_data_rejected');
-
-//     loadDataRejectedTable.empty();
-
-//     const rejectedData = scrapData.filter(scrap_data => scrap_data.validation === false);
-//     console.log("Rejected Data:" + rejectedData.length)
-    
-//     rejectedData.forEach(function (s_data) {
-
-//         // Remove both ".png", "webp" and ".jpg" extensions from s_data.image_name
-//         const image_name = s_data.image_name.replace(/\.(png|jpg|webp)$/, '');
-
-//         // // Construct the image URL
-//         const imageUrl = `https://gov-finder.s3.amazonaws.com/images/${image_name}.png`;
-        
-//         const validationText = s_data.validation ? 'Accepted' : 'Rejected';
-//         const row = `<tr>
-//             <td>${s_data.id}</td>
-//             <td class="images" >
-//                 <img src="${imageUrl}" onerror="this.src='${placeholderImg}'" />
-//             </td>
-//             <td>${s_data.name}</td>
-//             <td>${s_data.designation}</td>
-//             <td>${s_data.dep}</td>
-//             <td>${s_data.address}</td>
-//             <td>${s_data.email}</td>
-//             <td>${s_data.phone_number}</td>
-//             <td><a target=_blank href="${s_data.link}">${s_data.link}</a></td>
-//             <td>${s_data.desc}</td>
-//             <td>${s_data.hierarchy}</td>
-//             <td>${s_data.feedback_data}</td>
-//             <td>${validationText}</td>
-//             <td>
-//                 <button class="validate_accept btn btn-success" data-id="${s_data.id}">Accept</button>
-//             </td>
-//         </tr>`;
-//         loadDataRejectedTable.append(row);
-//     });
-
-//     // Show or hide the table based on whether there is data
-//     if (rejectedData.length > 0) {
-//         $('#leadership_table_rejected').show();
-//     } else {
-//         $('#leadership_table_rejected').hide();
-//     }
-// }
 
 // Use event delegation for dynamically added elements
 $(document).on('click', '.validate_accept', function () {
     const id = $(this).data('id');
-    handleValidation(id, true);
+    // Retrieve the feedback text from the corresponding textarea
+    const feedbackText = $(`#feedback_${id}`).val();
+    handleValidation(id, true, feedbackText);
 });
 
 $(document).on('click', '.validate_reject', function () {
     const id = $(this).data('id');
-    handleValidation(id, false);
+    // Retrieve the feedback text from the corresponding textarea
+    const feedbackText = $(`#feedback_${id}`).val();
+    handleValidation(id, false, feedbackText);
 });
 
-function handleValidation(id, validation) {
+function handleValidation(id, validation, feedbackText) {
     // Send a GET request to validate or reject the data
     const url = validation ? '/accepted_data/' : '/rejected_data/';
     $.ajax({
@@ -396,10 +195,34 @@ function handleValidation(id, validation) {
         dataType: 'json',
         success: function (response) {
             console.log('Data Validated:', response);
-            initDataTable('null'); // Update the data after validation
+
+            // Update the DataTable row with the updated data
+            updateDataTableRow(response.data);
+            sendFeedback(id, feedbackText, function () {
+                // Update the DataTable row after successfully submitting feedback
+                updateDataTableRow(updatedRow);
+            });
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.error('Error Validating Data:', errorThrown);
         },
     });
+}
+
+function updateDataTableRow(updatedRow) {
+    const table = $('#leadership-table').DataTable();
+
+    // Get all data in the DataTable
+    const allData = table.rows().data().toArray();
+
+    // Find the index of the row with the matching ID
+    const rowIndex = allData.findIndex(row => row.id === updatedRow.id);
+
+    if (rowIndex !== -1) {
+        // If the row is found, update the data
+        table.row(rowIndex).data(updatedRow).draw(false);
+        console.log('Row updated in the DataTable:', updatedRow);
+    } else {
+        console.error('Row not found in the DataTable:', updatedRow);
+    }
 }
