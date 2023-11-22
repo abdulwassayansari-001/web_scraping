@@ -189,6 +189,7 @@ nav{
   width: 100% !important;
   /* margin: 10px 0px 0px 10px !important; */
   margin: 0 auto !important;
+  max-width: 1400px !important;
 }
 #leadership-table_wrapper{
   margin-top: 20px;
@@ -200,12 +201,12 @@ nav{
     font-size: 13px;
 }
 
-.desc_class{
-  width: 300px;
+/* .desc_class{
+  width: 500px !important;
 }
 .hierarchy_class{
   width: 180px !important;
-}
+} */
 
 /* .leadership-data td:nth-child(8){
  white-space: nowrap;
@@ -298,3 +299,24 @@ th{
   overflow-y: auto;
   text-align: left;
 } */
+
+/* #leadership-table > tbody > tr > td {
+  word-break: break-all !important;
+} */
+
+.link_class{
+  word-break: break-all !important;
+}
+
+.table th, .table td {
+  vertical-align: middle !important; 
+}
+
+.page-item.active .page-link {
+  color: #ffffff !important;
+  background-color: #343a40 !important;
+  border-color: #343a40 !important;
+}
+.page-link {
+  color: black !important;
+}

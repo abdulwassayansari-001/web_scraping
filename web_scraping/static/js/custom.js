@@ -11,7 +11,6 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-    // Replace 'your-target-class' with the class you're checking for
     var null_data_class = document.querySelector('.null_data');
     var accepted_data_class = document.querySelector('.accepted_data');
     var rejected_data_class = document.querySelector('.rejected_data');
@@ -47,15 +46,22 @@ function initDataTable(validationStatus) {
         dataTable.destroy();
     }
 
+    // Get CSRF token
+    const csrftoken = getCookie('csrftoken');
     dataTable = $('#leadership-table').DataTable({
-        "dom": '<"top"f<"clear">><"top"lip<"clear">>rt<"bottom"ip<"clear">>',
+        "dom": '<"top"Bf<"clear">><"top"lip<"clear">>rt<"bottom"ip<"clear">>',
+        // autoWidth: false,
         scrollX: true,
         serverSide: true,
-        
+        orderCellsTop: true,
+        rowReorder: true,
         ajax: {
             url: `/get_data/?validation_status=${validationStatus}`, 
-            type: 'GET',
+            type: 'POST',
             dataType: 'json',
+            headers: {
+                'X-CSRFToken': csrftoken
+            },
         },
         pageLength: 100,  // Set the number of records per page
         columns: [
@@ -77,8 +83,24 @@ function initDataTable(validationStatus) {
                 }
             },
             { data: 'desc',  title: 'Description' },
-            { data: 'hierarchy',  title: 'Hierarchy' },
-            { data: 'validation',  title: 'Status' },
+            {  data: 'hierarchy',  title: 'Hierarchy'},
+            {
+                data: 'validation',
+                title: 'Status',
+                render: function (data, type, row) {
+                    if (row.validation === false) {
+                        return `<p>Rejected</p>`;
+                    } else if (row.validation === true) {
+                        return `<p>Accepted</p>`;
+                    } else {
+                        return `<p>Unvalidated</p>`;
+                    }
+                },
+                visible: false, // Set the default visibility here
+            },
+
+            
+            
             {
                 data: 'feedback_data',  title: 'Feedback',
                 render: function (data, type, row) {
@@ -86,24 +108,27 @@ function initDataTable(validationStatus) {
                 }
             },
             {
-                data: 'id',  title: 'Accept',
+                data: 'id',  title: 'Validation',
                 render: function (data, type, row) {
-                    return `<button class="validate_accept submit_feedback btn btn-success" data-id="${data}">Accept</button>`;
+                    if (row.validation === false) {
+                        return `<button class="validate_accept submit_feedback btn btn-success" data-id="${data}">Accept</button>`;
+                    } 
+                    if (row.validation === true) {
+                        return `<button class="validate_reject submit_feedback btn btn-danger" data-id="${data}">Reject</button>`;
+                    }
+                    else{
+                        return `<span style = 'display: flex;'> <button style = 'margin:2px;' class="validate_accept submit_feedback btn btn-success" data-id="${data}">Accept</button>  <button style = 'margin:2px;' class="validate_reject submit_feedback btn btn-danger" data-id="${data}">Reject</button> </span> `;
+                    }
                 }
             },
-            {
-                data: 'id',  title: 'Reject',
-                render: function (data, type, row) {
-                    return `<button class="validate_reject submit_feedback btn btn-danger" data-id="${data}">Reject</button>`;
-                }
-            }
         ],
 
         // Include the searchHighlight extension
         searchHighlight: true,
         search: {
-            smart: true,  // Enable smart search
-            regex: true,  // Enable regular expression search
+            regex: true,  // Disable regular expression search
+            smart: false,  // Disable smart search
+            caseInsensitive: true  // Make the search case-insensitive
         },
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
@@ -111,28 +136,69 @@ function initDataTable(validationStatus) {
         ],
         columnDefs: [
             {
-                search: 'applied',
-                regex: true,
-                targets: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],  // Adjust column indices as needed
+                targets: 1,
+                className: 'noVis'
+            },
+            {
+                targets: [4],
+                width: '200px'
+            },
+            {
+                targets: [5],
+                width: '300px'
+            },
+            {
+                targets: [7],
+                width: '200px'
+            },
+            {
+                targets: [8],
+                width: '300px',
+                className:'link_class'
             },
             {
                 targets: [9], 
                 className: 'desc_class',
+               
             },
             {
                 targets: [10], 
                 className: 'hierarchy_class',
+                width: '200px',
             },
+            { 
+                orderable: true, 
+                className: 'reorder', 
+                targets: 0 },
+            { 
+                orderable: false, 
+                targets: '_all' },
+            { width: "400px", targets: 9 },
+        ],
+        buttons: [
+            {
+                extend: 'colvis',
+                columns: ':not(.noVis)'
+            }
         ],
         lengthMenu: [
-            [ 100, 200, 500, 1000 ],
-            [ '100', '200', '500', '1000']
+            [ 100, 200, 500 ],
+            [ '100', '200', '500']
         ],
+        
         // Additional DataTable options can be added here
+        
+        initComplete: function() {
+            dataTable.draw();
+            applyDropdownFilter();
+            
+        }
+
+        
     });
 
-    // Add the draw event listener for search highlighting
-    dataTable.on('draw', function () {
+       // Add the draw event listener for search highlighting
+       dataTable.on('draw', function () {
         console.log('DataTable initialized.');
         var body = $(dataTable.table().body());
         body.unhighlight();
@@ -141,6 +207,66 @@ function initDataTable(validationStatus) {
 }
 
 
+
+// Function to apply dropdown filter
+function applyDropdownFilter() {
+    var dataTable = $('#leadership-table').DataTable();
+    var column = dataTable.column(10);
+
+    depart = ['Department of Veterans Affairs',
+        'Executive Office of the President',
+        'Department of Transportation',
+        'Department of State',
+        'Department of Treasury',
+        'Department of Agriculture',
+        'Department of Education',
+        'Department of Energy',
+        'Department of Commerce',
+        'Department of Labour',
+        'Department of Housing and Urban',
+        'Department of Homeland Security',
+        'Department of Justice',
+        'Department of Health and Human Services',
+        'Department of Interior',
+        'Department of Defense'
+    ];
+
+    var select = $('<select><option value=""></option></select>')
+        .appendTo($("thead tr").eq(0).find("th").eq(column.index()))
+        .on('change', function() {
+            // Get the selected value from the dropdown
+            var dropdownValue = $.fn.dataTable.util.escapeRegex($(this).val());
+
+            // Use a regular expression to match the exact value in the dropdown
+            // var regex = '\\b' + dropdownValue + '\\b';
+
+            // Set the search term for the specific column
+            column
+                .search(dropdownValue, true, false)
+                .draw(); // Draw the table with the new search
+        });
+
+    depart.forEach(function(d) {
+        select.append('<option value="' + d + '">' + d + '</option>');
+    });
+}
+
+
+// Function to get CSRF token from cookie
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
 
 function sendFeedback(id, feedbackText, callback) {
     const url = `/feedback_data/${id}/`;
