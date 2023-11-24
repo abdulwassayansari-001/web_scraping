@@ -192,6 +192,7 @@ function initDataTable(validationStatus) {
             dataTable.draw();
             applyDropdownFilter();
             
+            
         }
 
         
@@ -311,7 +312,14 @@ $(document).on('click', '.validate_reject', function () {
     handleValidation(id, false, feedbackText);
 });
 
+let submittingFeedback = false;
+
 function handleValidation(id, validation, feedbackText) {
+    // If feedback is already being submitted, ignore the click
+    if (submittingFeedback) {
+        return;
+    }
+
     // Send a GET request to validate or reject the data
     const url = validation ? '/accepted_data/' : '/rejected_data/';
     $.ajax({
@@ -322,10 +330,23 @@ function handleValidation(id, validation, feedbackText) {
         success: function (response) {
             console.log('Data Validated:', response);
 
-            // Update the DataTable row with the updated data
-            updateDataTableRow(response.data);
+            // Set the flag to indicate that feedback is being submitted
+            submittingFeedback = true;
+
+            // Hide the feedback box while feedback is being submitted
+            const feedbackBox = $(`#feedback_${id}`);
+            feedbackBox.hide();
+
+            // Send feedback
             sendFeedback(id, feedbackText, function () {
-                // Update the DataTable row after successfully submitting feedback
+                // Reset the flag after feedback is successfully submitted
+                submittingFeedback = false;
+
+                // After the DataTable row is successfully updated, show the feedback box
+                feedbackBox.show();
+
+                // Update the DataTable row
+                const updatedRow = response.data;  // Define updatedRow in this scope
                 updateDataTableRow(updatedRow);
             });
         },

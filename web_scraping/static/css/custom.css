@@ -172,10 +172,11 @@ nav{
   margin-left: 40px !important;
 }
 #leadership-table{
-    font-size: 12px !important;
+    font-size: 13px !important;
+    font-family: 'Roboto', sans-serif;
 }
 .table thead tr th{
-  font-size: 13px !important;
+  font-size: 14px !important;
   text-align: center !important;
 }
 .table tbody td{
@@ -319,4 +320,16 @@ th{
 }
 .page-link {
   color: black !important;
+}
+
+div.dataTables_wrapper div.dataTables_length,
+div.dataTables_wrapper div.dataTables_filter,
+div.dataTables_wrapper div.dataTables_info,
+div.dataTables_wrapper div.dataTables_paginate {
+  font-family: 'Roboto', sans-serif !important;
+}
+
+div.dataTables_wrapper div.dataTables_info{
+  width: 400px;
+  margin-bottom: -35px;
 }
