@@ -51,9 +51,9 @@
                   <li class="nav-item">
                     <a class="nav-link {% if request.resolver_match.url_name == 'rejected' %}active{% endif %}" href="{% url 'data:rejected' %}">Rejected</a>
                   </li>
-                  <li class="nav-item">
+                  <!-- <li class="nav-item">
                     <a class="nav-link {% if request.resolver_match.url_name == 'accepted_modification' %}active{% endif %}" href="{% url 'data:accepted_modification' %}">Modification</a>
-                  </li>
+                  </li> -->
                   <li class="nav-item">
                     <a class="nav-link {% if request.resolver_match.url_name == 'upload_csv' %}active{% endif %}" href="{% url 'data:upload_csv' %}">Upload CSV</a>
                   </li>

@@ -45,7 +45,7 @@ def get_data(request, validation_status=None):
         if request.method == 'POST':
             # Handle POST request parameters
             validation_status = request.GET.get('validation_status')
-            modification = request.GET.get('modification')
+            # modification = request.GET.get('modification')
             draw = int(request.POST.get('draw', 1))
             start = int(request.POST.get('start', 0))
             length = int(request.POST.get('length', 10000))
@@ -70,21 +70,21 @@ def get_data(request, validation_status=None):
             
             print('Search value:', search_value)
             print('Hierarchy value:', hierarchy_value)
-            if validation_status == 'null' and modification == 'false':
+            if validation_status == 'null':
                 scrap_data = DataScrap.objects.filter(validation__isnull=True).filter(filter_conditions).order_by(ordering)
-            elif validation_status == 'true' and modification == 'false':
+            elif validation_status == 'true':
                 scrap_data = DataScrap.objects.filter(validation=True).filter(filter_conditions).order_by(ordering)
-            elif validation_status == 'false' and modification == 'false':
+            elif validation_status == 'false':
                 scrap_data = DataScrap.objects.filter(validation=False).filter(filter_conditions).order_by(ordering)
 
-            elif validation_status == 'true' and modification == 'true':
-                # scrap_data = DataScrap.objects.filter(validation=True).filter(filter_conditions).filter(feedback__feedback_data__isnull=False, feedback__feedback_data = '').order_by(ordering)
-                scrap_data = DataScrap.objects.filter(
-                    filter_conditions,
-                    validation=True,
-                    ).exclude(
-                    Q(feedback__feedback_data__isnull=True) | Q(feedback__feedback_data='')
-                    ).order_by(ordering)
+            # elif validation_status == 'true' and modification == 'true':
+            #     # scrap_data = DataScrap.objects.filter(validation=True).filter(filter_conditions).filter(feedback__feedback_data__isnull=False, feedback__feedback_data = '').order_by(ordering)
+            #     scrap_data = DataScrap.objects.filter(
+            #         filter_conditions,
+            #         validation=True,
+            #         ).exclude(
+            #         Q(feedback__feedback_data__isnull=True) | Q(feedback__feedback_data='')
+            #         ).order_by(ordering)
             else:
                 # Default case: all data
                 print("default")

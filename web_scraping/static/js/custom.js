@@ -14,34 +14,34 @@ $(document).ready(function () {
     var null_data_class = document.querySelector('.null_data');
     var accepted_data_class = document.querySelector('.accepted_data');
     var rejected_data_class = document.querySelector('.rejected_data');
-    var accepted_data_modification = document.querySelector('.accepted_data_modification');
+    // var accepted_data_modification = document.querySelector('.accepted_data_modification');
 
     // Check if the element with the target class exists on the page
     if (null_data_class) {
         // Your code to run when the class is present on this page
         console.log('Null Data');
-        initDataTable('null', 'false');
+        initDataTable('null');
     }
 
     if (accepted_data_class) {
         // Your code to run when the class is present on this page
         console.log('Accepted Data');
-        initDataTable('true', 'false');
+        initDataTable('true');
     }
     
     if (rejected_data_class) {
         // Your code to run when the class is present on this page
         console.log('Rejected Data');
-        initDataTable('false', 'false');
+        initDataTable('false');
 
     }
     
-    if (accepted_data_modification) {
-        // Your code to run when the class is present on this page
-        console.log('Accepted Modification Data');
-        initDataTable('true', 'true');
+    // if (accepted_data_modification) {
+    //     // Your code to run when the class is present on this page
+    //     console.log('Accepted Modification Data');
+    //     initDataTable('true');
 
-    }
+    // }
 });
 
 // Function to initialize DataTable
