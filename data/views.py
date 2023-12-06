@@ -45,6 +45,7 @@ def get_data(request, validation_status=None):
         if request.method == 'POST':
             # Handle POST request parameters
             validation_status = request.GET.get('validation_status')
+            modification = request.GET.get('modification')
             draw = int(request.POST.get('draw', 1))
             start = int(request.POST.get('start', 0))
             length = int(request.POST.get('length', 10000))
@@ -69,12 +70,16 @@ def get_data(request, validation_status=None):
             
             print('Search value:', search_value)
             print('Hierarchy value:', hierarchy_value)
-            if validation_status == 'null':
+            if validation_status == 'null' and modification == 'false':
                 scrap_data = DataScrap.objects.filter(validation__isnull=True).filter(filter_conditions).order_by(ordering)
-            elif validation_status == 'true':
+            elif validation_status == 'true' and modification == 'false':
                 scrap_data = DataScrap.objects.filter(validation=True).filter(filter_conditions).order_by(ordering)
-            elif validation_status == 'false':
+            elif validation_status == 'false' and modification == 'false':
                 scrap_data = DataScrap.objects.filter(validation=False).filter(filter_conditions).order_by(ordering)
+
+            elif validation_status == 'true' and modification == 'true':
+                scrap_data = DataScrap.objects.filter(validation=True).filter(filter_conditions).order_by(ordering)
+                scrap_data = scrap_data.exclude(feedback__isnull=False, feedback__feedback_data='')
             else:
                 # Default case: all data
                 print("default")
@@ -147,6 +152,9 @@ def accepted_data(request):
 
 def accepted(request):
     return render(request, 'data/accepted.html')
+
+def accepted_modification(request):
+    return render(request, 'data/modification.html')
 
 def rejected_data(request):
     if request.method == "GET":

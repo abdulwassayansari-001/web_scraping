@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>GovFinder</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+  <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+  <script src="https://bartaz.github.io/sandbox.js/jquery.highlight.js"></script>
+  <script src="https://cdn.datatables.net/plug-ins/1.13.7/features/searchHighlight/dataTables.searchHighlight.min.js"></script>
+
+</head>
+
+<style>
+    #leadership-data td{
+        border: 1px solid rgb(67, 67, 67);
+        padding: 4px;
+    }
+    th{
+        text-align: center;
+    }
+</style>
+
+<body>
+
+    <div class="container mt-10">
+        
+        <table id="leadership-table" class="accepted_data_modification center center table table-striped table-bordered">
+            </table>
+            
+            
+        </div>
+        </body>
+</html>
+
+{% endblock body %}

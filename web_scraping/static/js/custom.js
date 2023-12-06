@@ -14,32 +14,38 @@ $(document).ready(function () {
     var null_data_class = document.querySelector('.null_data');
     var accepted_data_class = document.querySelector('.accepted_data');
     var rejected_data_class = document.querySelector('.rejected_data');
+    var accepted_data_modification = document.querySelector('.accepted_data_modification');
 
     // Check if the element with the target class exists on the page
     if (null_data_class) {
         // Your code to run when the class is present on this page
         console.log('Null Data');
-        initDataTable('null');
-
-        // Add your additional code here
+        initDataTable('null', 'false');
     }
+
     if (accepted_data_class) {
         // Your code to run when the class is present on this page
         console.log('Accepted Data');
-        initDataTable('true');
-
-        // Add your additional code here
-    }if (rejected_data_class) {
+        initDataTable('true', 'false');
+    }
+    
+    if (rejected_data_class) {
         // Your code to run when the class is present on this page
         console.log('Rejected Data');
-        initDataTable('false');
+        initDataTable('false', 'false');
 
-        // Add your additional code here
+    }
+    
+    if (accepted_data_modification) {
+        // Your code to run when the class is present on this page
+        console.log('Rejected Data');
+        initDataTable('true', 'true');
+
     }
 });
 
 // Function to initialize DataTable
-function initDataTable(validationStatus) {
+function initDataTable(validationStatus, modification) {
 
      // Destroy existing DataTable if it exists
      if (dataTable) {
@@ -56,7 +62,7 @@ function initDataTable(validationStatus) {
         orderCellsTop: true,
         rowReorder: true,
         ajax: {
-            url: `/get_data/?validation_status=${validationStatus}`, 
+            url: `/get_data/?validation_status=${validationStatus}&modification=${modification}`,
             type: 'POST',
             dataType: 'json',
             headers: {
@@ -130,10 +136,6 @@ function initDataTable(validationStatus) {
             smart: false,  // Disable smart search
             caseInsensitive: true  // Make the search case-insensitive
         },
-        buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-            // Add more buttons as needed, see documentation for available options
-        ],
         columnDefs: [
             {
                 targets: 1,
@@ -179,6 +181,12 @@ function initDataTable(validationStatus) {
             {
                 extend: 'colvis',
                 columns: ':not(.noVis)'
+                
+            },
+            {
+                extend: 'excel',
+                text: 'Download File'
+                // Add more buttons or options as needed
             }
         ],
         lengthMenu: [

@@ -168,3 +168,5 @@ data/.minio.sys
 govfinder-backend.pem
 
 commands.txt
+
+docker-compose.yaml
