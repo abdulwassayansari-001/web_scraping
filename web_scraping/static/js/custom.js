@@ -38,7 +38,7 @@ $(document).ready(function () {
     
     if (accepted_data_modification) {
         // Your code to run when the class is present on this page
-        console.log('Rejected Data');
+        console.log('Accepted Modification Data');
         initDataTable('true', 'true');
 
     }
