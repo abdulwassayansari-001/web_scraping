@@ -79,7 +79,7 @@ def get_data(request, validation_status=None):
 
             elif validation_status == 'true' and modification == 'true':
                 scrap_data = DataScrap.objects.filter(validation=True).filter(filter_conditions).order_by(ordering)
-                scrap_data = scrap_data.exclude(feedback__isnull=False, feedback__feedback_data='')
+                scrap_data = scrap_data.exclude(feedback__feedback_data='')
             else:
                 # Default case: all data
                 print("default")
