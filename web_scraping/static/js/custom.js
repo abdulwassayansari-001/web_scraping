@@ -237,7 +237,8 @@ function applyDropdownFilter() {
         'Department of Justice',
         'Department of Health and Human Services',
         'Department of Interior',
-        'Department of Defense'
+        'Department of Defense',
+        'Independent Establishment and Government Corporations'
     ];
 
     var select = $('<select><option value=""></option></select>')
