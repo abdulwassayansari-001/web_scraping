@@ -215,7 +215,7 @@ def upload_csv(request):
                     existing_record.desc = row[7]
                     existing_record.hierarchy = row[8]
                     existing_record.image_name = row[9]
-                    # existing_record.validation = None
+                    existing_record.validation = existing_record.validation
                     existing_record.save()
                 else:
                     # Create a new instance of DataScrap with appropriate field values
