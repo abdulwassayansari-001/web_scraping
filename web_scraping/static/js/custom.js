@@ -110,7 +110,7 @@ function initDataTable(validationStatus, modification) {
             {
                 data: 'feedback_data',  title: 'Feedback',
                 render: function (data, type, row) {
-                    return `<textarea class="textarea" id="feedback_${row.id}">${data}</textarea>`;
+                    return `<textarea class="textarea" id="feedback_${row.id}">${data}</textarea> <button class="feedback_submit_btn btn btn-primary" data-id="${row.id}">Submit</button>`;
                 }
             },
             {
@@ -277,6 +277,16 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
+$(document).on('click', '.feedback_submit_btn', function () {
+    const id = $(this).data('id');
+    const feedbackText = $(`#feedback_${id}`).val();
+
+    // Use your existing sendFeedback function
+    sendFeedback(id, feedbackText, function () {
+        console.log('Feedback submitted and data table updated for ID:', id);
+    });
+});
 
 function sendFeedback(id, feedbackText, callback) {
     const url = `/feedback_data/${id}/`;

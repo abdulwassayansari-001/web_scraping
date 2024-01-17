@@ -333,3 +333,12 @@ div.dataTables_wrapper div.dataTables_info{
   width: 400px;
   margin-bottom: -35px;
 }
+
+.feedback_submit_btn{
+  margin-top: 6px;
+}
+
+.textarea{
+  font-size: 14px !important;
+  height: 100px;
+}
