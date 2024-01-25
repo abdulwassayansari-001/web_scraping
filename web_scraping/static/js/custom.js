@@ -4,6 +4,7 @@ let nullDataElement = null
 let acceptedDataElement = null
 let rejectedDataElement = null
 let dataTable;
+let legislative_dataTable;
 
 $(document).ready(function () {
     // Initially display the loader when the page loads
@@ -14,6 +15,7 @@ $(document).ready(function () {
     var null_data_class = document.querySelector('.null_data');
     var accepted_data_class = document.querySelector('.accepted_data');
     var rejected_data_class = document.querySelector('.rejected_data');
+    var legislative_data_class = document.querySelector('.legislative_data');
     // var accepted_data_modification = document.querySelector('.accepted_data_modification');
 
     // Check if the element with the target class exists on the page
@@ -35,6 +37,14 @@ $(document).ready(function () {
         initDataTable('false');
 
     }
+
+    if (legislative_data_class) {
+        // Your code to run when the class is present on this page
+        console.log('Legislative Data');
+        LegislativeDataTable();
+    }
+
+
     
     // if (accepted_data_modification) {
     //     // Your code to run when the class is present on this page
@@ -391,4 +401,77 @@ function updateDataTableRow(updatedRow) {
     } else {
         console.error('Row not found in the DataTable:', updatedRow);
     }
+}
+
+
+
+
+// Function to initialize DataTable
+function LegislativeDataTable() {
+
+    // Destroy existing DataTable if it exists
+    if (legislative_dataTable) {
+        legislative_dataTable.destroy();
+   }
+
+   // Get CSRF token
+   const csrftoken = getCookie('csrftoken');
+   legislative_dataTable = $('#legislative-table').DataTable({
+       "dom": '<"top"Bf<"clear">><"top"lip<"clear">>rt<"bottom"<"clear">>',
+       // autoWidth: false,
+       scrollX: true,
+       serverSide: true,
+       orderCellsTop: true,
+       rowReorder: true,
+       ajax: {
+           url: `/legislative/data_json/`,
+           type: 'POST',
+           dataType: 'json',
+           headers: {
+               'X-CSRFToken': csrftoken
+           },
+       },
+       pageLength: 100,  // Set the number of records per page
+       columns: [
+            { data: 'id',  title: 'ID' },
+            { data: 'member.name',  title: 'Name' },
+            { data: 'committee.name',  title: 'Committee' },
+            { data: 'subcommittee.name',  title: 'Sub Committee' },
+       ],
+
+       // Include the searchHighlight extension
+       searchHighlight: true,
+       search: {
+           regex: true,  // Disable regular expression search
+           smart: false,  // Disable smart search
+           caseInsensitive: true  // Make the search case-insensitive
+       },
+       buttons: [
+           {
+               extend: 'colvis',
+               columns: ':not(.noVis)'
+               
+           },
+           {
+               extend: 'excel',
+               text: 'Download File'
+               // Add more buttons or options as needed
+           }
+       ],
+       lengthMenu: [
+           [ 100, 200, 500 ],
+           [ '100', '200', '500']
+       ],
+       
+       // Additional DataTable options can be added here
+       
+       initComplete: function() {
+        legislative_dataTable.draw();
+           applyDropdownFilter();
+           
+           
+       }
+
+       
+   });
 }

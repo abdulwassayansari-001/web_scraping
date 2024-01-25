@@ -73,6 +73,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'django_extensions',
     'data',
+    'legislative',
+     'django_select2',
 ]
 
 MIDDLEWARE = [
