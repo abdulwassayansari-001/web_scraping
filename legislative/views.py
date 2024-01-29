@@ -321,6 +321,7 @@ def success_page(request):
     return render(request, 'data/success.html')
 
 from django.forms.models import model_to_dict
+from django.contrib import messages
 
 def upload_data(request):
     if request.method == 'POST':
@@ -332,7 +333,15 @@ def upload_data(request):
             # Store the data in the session for later use
             request.session['last_submitted_data'] = model_to_dict(data)
 
+            # Add a success message for the alert
+            messages.success(request, 'Form submitted successfully!')
+
             return redirect('legislative:upload_data')
+        
+        else:
+            # Add an error message for the alert if the form is not valid
+            messages.error(request, 'Form submission failed. Please check your input.')
+
     else:
         # Check if there is last submitted data in the session
         last_submitted_data = request.session.get('last_submitted_data')

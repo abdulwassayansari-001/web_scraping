@@ -10,3 +10,19 @@
     {{ form }}
     <input type="submit" value="Submit">
 </form>
+
+
+
+{% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+    {% endfor %}
+  </ul>
+  <script>
+    // Add a script to automatically close the alert after 2 seconds
+    setTimeout(function() {
+      document.querySelector('.messages').style.display = 'none';
+    }, 1500);
+  </script>
+{% endif %}
