@@ -430,13 +430,43 @@ function LegislativeDataTable() {
            headers: {
                'X-CSRFToken': csrftoken
            },
-       },
+        },
+       
        pageLength: 100,  // Set the number of records per page
        columns: [
             { data: 'id',  title: 'ID' },
-            { data: 'member.name',  title: 'Name' },
-            { data: 'committee.name',  title: 'Committee' },
-            { data: 'subcommittee.name',  title: 'Sub Committee' },
+            {
+                data: 'member',
+                title: 'Name',
+                render: function (data, type, row) {
+                    return data ? data.name : ''; // Safely access the member's name if the member data exists
+                }
+            },
+
+            { data: 'committee',  title: 'Committee',
+                render: function (data, type, row){
+                    return data ? data.name : '';
+                }    
+            },
+
+            { data: 'subcommittee',  title: 'Sub Committee',
+            render: function (data, type, row){
+                return data ? data.name : '';
+            }    
+            },
+
+            { data: 'title',  title: 'Title',
+            render: function (data, type, row){
+                return data ? data.name : '';
+            }    
+            },
+
+            { data: 'hierarchy',  title: 'Hierarchy',
+            render: function (data, type, row){
+                return data ? data.name : '';
+            }    
+            },
+
        ],
 
        // Include the searchHighlight extension
@@ -467,11 +497,16 @@ function LegislativeDataTable() {
        
        initComplete: function() {
         legislative_dataTable.draw();
-           applyDropdownFilter();
-           
-           
        }
 
        
    });
+
+       // Add the draw event listener for search highlighting
+       legislative_dataTable.on('draw', function () {
+        console.log('DataTable initialized.');
+        var body = $(legislative_dataTable.table().body());
+        body.unhighlight();
+        body.highlight(legislative_dataTable.search());
+    });
 }

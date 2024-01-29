@@ -1,0 +1,12 @@
+<style>
+    .dropdown-field {
+        display: block;
+        margin-bottom: 10px;  /* Adjust as needed */
+    }
+</style>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+</form>

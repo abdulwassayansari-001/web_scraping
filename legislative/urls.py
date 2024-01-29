@@ -16,4 +16,6 @@ urlpatterns = [
     path("data/", views.data, name="data"),
     path('upload_member_csv/', views.upload_member_csv, name='upload_member_csv'),
     path('upload_committee_csv/', views.upload_committee_csv, name='upload_committee_csv'),
+    path('upload_title_csv/', views.upload_title_csv, name='upload_title_csv'),
+    path('upload_data/', views.upload_data, name='upload_data'),
 ]
