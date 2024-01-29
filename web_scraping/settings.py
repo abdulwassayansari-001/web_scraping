@@ -74,7 +74,6 @@ INSTALLED_APPS = [
     'django_extensions',
     'data',
     'legislative',
-     'django_select2',
 ]
 
 MIDDLEWARE = [
