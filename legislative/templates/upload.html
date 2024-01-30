@@ -16,6 +16,15 @@
     <title>Upload CSV</title>
 </head>
 <body>
+
+    <div>
+        <a class="nav-link {% if request.resolver_match.url_name == 'upload_member_csv' %}active{% endif %}" href="{% url 'legislative:upload_member_csv' %}">Member CSV</a>
+        <a class="nav-link {% if request.resolver_match.url_name == 'upload_committee_csv' %}active{% endif %}" href="{% url 'legislative:upload_committee_csv' %}">Committee CSV</a>
+        <a class="nav-link {% if request.resolver_match.url_name == 'upload_subcommittee_csv' %}active{% endif %}" href="{% url 'legislative:upload_subcommittee_csv' %}">SubCommittee CSV</a>
+        <a class="nav-link {% if request.resolver_match.url_name == 'upload_title_csv' %}active{% endif %}" href="{% url 'legislative:upload_title_csv' %}">Title CSV</a>
+        <a class="nav-link {% if request.resolver_match.url_name == 'upload_hierarchy_csv' %}active{% endif %}" href="{% url 'legislative:upload_hierarchy_csv' %}">Hierarchy CSV</a>
+    </div>
+
     <div class="upload_div">
         <div>
             <h1>Upload a CSV File</h1>
@@ -23,6 +32,7 @@
                 {% csrf_token %}
                 {{ member_form.as_p }}
                 {{ committee_form.as_p }}
+                {{ subcommittee_form.as_p }}
                 {{ title_form.as_p }}
                 <input class="btn btn-secondary" type="file" name="file">
                 <button class="btn btn-primary" type="submit" id="upload-button">Upload</button>

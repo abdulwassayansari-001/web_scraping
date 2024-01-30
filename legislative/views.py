@@ -2,39 +2,11 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .forms import *
 from .models import *
-
-def create_member(request):
-    if request.method == 'POST':
-        form = MembersForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('success_page')
-    else:
-        form = MembersForm()
-
-    return render(request, 'create_member.html', {'form': form})
-
-def create_committee(request):
-    if request.method == 'POST':
-        form = CommitteesForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('success_page')
-    else:
-        form = CommitteesForm()
-
-    return render(request, 'create_committee.html', {'form': form})
-
-def create_subcommittee(request):
-    if request.method == 'POST':
-        form = SubCommitteesForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('success_page')
-    else:
-        form = SubCommitteesForm()
-
-    return render(request, 'create_subcommittee.html', {'form': form})
+from django.core.paginator import Paginator, EmptyPage
+from django.db.models import Q
+from django.http import JsonResponse
+import logging
+logger = logging.getLogger(__name__)
 
 
 def success_page(request):
@@ -45,52 +17,6 @@ def data(request):
     return render(request, 'data.html')
 
 
-# def data_json(request):
-#     data_list = Data.objects.select_related('member', 'committee', 'subcommittee').all()
-
-#     data_list_json = [
-#         {
-#             'id': item.id,
-#             'member': {
-#                 'id': item.member.id if item.member else None,
-#                 'name': item.member.name if item.member else None,
-#                 'state': item.member.state if item.member else None,
-#                 'party': item.member.party if item.member else None,
-#                 # Add other member fields as needed
-#             },
-#             'committee': {
-#                 'id': item.committee.id if item.committee else None,
-#                 'name': item.committee.name if item.committee else None,
-#                 # Add other committee fields as needed
-#             },
-#             'subcommittee': {
-#                 'id': item.subcommittee.id if item.subcommittee else None,
-#                 'name': item.subcommittee.name if item.subcommittee else None,
-#                 # Add other subcommittee fields as needed
-#             },
-#              'title': {
-#                 'id': item.title.id if item.title else None,
-#                 'name': item.title.title if item.title else None,
-#                 # Add other subcommittee fields as needed
-#             },
-#              'hierarchy': {
-#                 'id': item.hierarchy.id if item.hierarchy else None,
-#                 'name': item.hierarchy.hierarchy if item.hierarchy else None,
-#                 # Add other subcommittee fields as needed
-#             },
-#         }
-#         for item in data_list
-#     ]
-
-#     return JsonResponse({'data': data_list_json}, safe=False)
-
-
-
-from django.core.paginator import Paginator, EmptyPage
-from django.db.models import Q
-from django.http import JsonResponse
-import logging
-logger = logging.getLogger(__name__)
 
 def data_json(request):
     try:
@@ -145,6 +71,7 @@ def data_json(request):
                     'name': item.member.name,
                     'state': item.member.state,
                     'party': item.member.party,
+                    'image_name':item.member.image_name,
                 }
 
             # Committee
@@ -286,6 +213,39 @@ def upload_committee_csv(request):
 
     return render(request, 'upload.html', {'committee_form': csv_form, 'csv_files': db_csv_files})
 
+def upload_subcommittee_csv(request):
+    if request.method == 'POST':
+        csv_form = CSVSubCommitteeForm(request.POST, request.FILES)
+        if csv_form.is_valid():
+            csv_file = request.FILES['file']
+            csv_file_name = csv_file.name
+
+            decoded_file = csv_file.read().decode('utf-8')
+            csv_data = csv.reader(decoded_file.splitlines(), delimiter=',')
+
+            # Skip the header row
+            next(csv_data)
+
+            for row in csv_data:
+                SubCommittees.objects.create(              
+                    name=row[0],
+                    link=row[1]
+                )
+
+            # Save the file name in the CSVFiles model
+            csv_files_data = LegislativeCSVFiles(file_name=csv_file_name)
+            csv_files_data.save()
+
+            return redirect('data:success_page')
+    else:
+        csv_form = CSVSubCommitteeForm()
+
+    db_csv_files = LegislativeCSVFiles.objects.all()
+
+    return render(request, 'upload.html', {'subcommittee_form': csv_form, 'csv_files': db_csv_files})
+
+
+
 def upload_title_csv(request):
     if request.method == 'POST':
         csv_form = CSVTitleForm(request.POST, request.FILES)
@@ -315,6 +275,36 @@ def upload_title_csv(request):
     db_csv_files = LegislativeCSVFiles.objects.all()
 
     return render(request, 'upload.html', {'title_form': csv_form, 'csv_files': db_csv_files})
+
+def upload_hierarchy_csv(request):
+    if request.method == 'POST':
+        csv_form = CSVHierarchyForm(request.POST, request.FILES)
+        if csv_form.is_valid():
+            csv_file = request.FILES['file']
+            csv_file_name = csv_file.name
+
+            decoded_file = csv_file.read().decode('utf-8')
+            csv_data = csv.reader(decoded_file.splitlines(), delimiter=',')
+
+            # Skip the header row
+            next(csv_data)
+
+            for row in csv_data:
+                Hierarchy.objects.create(              
+                    hierarchy=row[0],
+                )
+
+            # Save the file name in the CSVFiles model
+            csv_files_data = LegislativeCSVFiles(file_name=csv_file_name)
+            csv_files_data.save()
+
+            return redirect('data:success_page')
+    else:
+        csv_form = CSVHierarchyForm()
+
+    db_csv_files = LegislativeCSVFiles.objects.all()
+
+    return render(request, 'upload.html', {'hierarchy_form': csv_form, 'csv_files': db_csv_files})
 
 
 def success_page(request):

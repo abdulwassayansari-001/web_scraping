@@ -43,20 +43,20 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'data' %}active{% endif %}" aria-current="page" href="{% url 'legislative:data' %}">Home</a>
+                    <a class="nav-link {% if request.resolver_match.url_name == 'data' %}active{% endif %}" aria-current="page" href="{% url 'data:data' %}">Home</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'accepted' %}active{% endif %}" href="{% url 'legislative:upload_data' %}">Upload Data</a>
+                    <a class="nav-link {% if request.resolver_match.url_name == 'accepted' %}active{% endif %}" href="{% url 'data:accepted' %}">Accepted</a>
                   </li>
-                  <!-- <li class="nav-item">
+                  <li class="nav-item">
                     <a class="nav-link {% if request.resolver_match.url_name == 'rejected' %}active{% endif %}" href="{% url 'data:rejected' %}">Rejected</a>
-                  </li> -->
+                  </li>
                   <!-- <li class="nav-item">
                     <a class="nav-link {% if request.resolver_match.url_name == 'accepted_modification' %}active{% endif %}" href="{% url 'data:accepted_modification' %}">Modification</a>
                   </li> -->
-                  <!-- <li class="nav-item">
+                  <li class="nav-item">
                     <a class="nav-link {% if request.resolver_match.url_name == 'upload_csv' %}active{% endif %}" href="{% url 'data:upload_csv' %}">Upload CSV</a>
-                  </li> -->
+                  </li>
             </ul>
 
             <!-- <form class="d-flex">

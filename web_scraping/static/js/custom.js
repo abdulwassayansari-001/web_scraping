@@ -443,6 +443,16 @@ function LegislativeDataTable() {
                 }
             },
 
+            {
+                data: 'member',
+                title: 'Image',
+                render: function (data, type, row) {
+                    const imageUrl = `https://gov-finder.s3.amazonaws.com/images/${data.image_name}`;
+                    console.log(data.image_name)
+                    return `<img style="width:80px;" src="${imageUrl}"/>`;
+                }
+            },
+
             { data: 'committee',  title: 'Committee',
                 render: function (data, type, row){
                     return data ? data.name : '';
