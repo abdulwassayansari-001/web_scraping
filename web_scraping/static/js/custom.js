@@ -460,7 +460,7 @@ function LegislativeDataTable() {
 
             { data: 'subcommittee',  title: 'Sub Committee',
             render: function (data, type, row){
-                return `<a href="${data.link}" target=_blank > ${data.name} </a>`;
+                return `<a href="" target=_blank > ${data.name} </a>`;
             }    
             },
 
