@@ -79,6 +79,7 @@ def data_json(request):
                 data_entry['committee'] = {
                     'id': item.committee.id,
                     'name': item.committee.name,
+                    'link':item.committee.link
                 }
 
             # Sub Committee
@@ -86,6 +87,7 @@ def data_json(request):
                 data_entry['subcommittee'] = {
                     'id': item.subcommittee.id,
                     'name': item.subcommittee.name,
+                    'link':item.subcommittee.link
                 }
 
             # Title

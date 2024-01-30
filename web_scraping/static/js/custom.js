@@ -454,13 +454,13 @@ function LegislativeDataTable() {
 
             { data: 'committee',  title: 'Committee',
                 render: function (data, type, row){
-                    return data ? data.name : '';
+                    return `<a href="${data.link}" target=_blank > ${data.name} </a>`;
                 }    
             },
 
             { data: 'subcommittee',  title: 'Sub Committee',
             render: function (data, type, row){
-                return data ? data.name : '';
+                return `<a href="${data.link}" target=_blank > ${data.name} </a>`;
             }    
             },
 
