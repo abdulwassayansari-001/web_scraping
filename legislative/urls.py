@@ -17,4 +17,5 @@ urlpatterns = [
     path('upload_title_csv/', views.upload_title_csv, name='upload_title_csv'),
     path('upload_hierarchy_csv/', views.upload_hierarchy_csv, name='upload_hierarchy_csv'),
     path('upload_data/', views.upload_data, name='upload_data'),
+    path('delete_data/<int:id>', views.delete_data, name='delete_data'),
 ]

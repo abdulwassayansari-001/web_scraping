@@ -338,3 +338,27 @@ def upload_data(request):
         form = DataForm(initial=last_submitted_data) if last_submitted_data else DataForm()
 
     return render(request, 'upload_data.html', {'form': form})
+
+
+# def delete_data(request, id):
+#     if request.method == "GET":
+#         id = request.GET.get("id")
+#         print(id)
+#         try:
+#             data = Data.objects.get(id=id)
+#             data.delete()
+#             return JsonResponse({"status": "success", 'data':data})
+#         except Data.DoesNotExist:
+#             return JsonResponse(
+#                 {"status": "error", "message": "Data record not found."}, status=404
+#             )
+        
+#     return JsonResponse(
+#         {"status": "error", "message": "Invalid request method."}, status=400
+#     )
+
+def delete_data(request, id):
+  print(id)
+  data = Data.objects.get(pk=id)
+  data.delete()
+  return JsonResponse({"status": "success"})

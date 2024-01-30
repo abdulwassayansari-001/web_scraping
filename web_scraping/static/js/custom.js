@@ -448,7 +448,6 @@ function LegislativeDataTable() {
                 title: 'Image',
                 render: function (data, type, row) {
                     const imageUrl = `https://gov-finder.s3.amazonaws.com/images/${data.image_name}`;
-                    console.log(data.image_name)
                     return `<img style="width:80px;" src="${imageUrl}"/>`;
                 }
             },
@@ -477,6 +476,11 @@ function LegislativeDataTable() {
             }    
             },
 
+            { data: 'id', title: 'Delete',
+            render: function (data, type, row){
+                return `<button class="delete_data btn btn-danger" data-id="${data}">Delete</button>`;
+            }    
+            },
        ],
 
        // Include the searchHighlight extension
@@ -520,3 +524,27 @@ function LegislativeDataTable() {
         body.highlight(legislative_dataTable.search());
     });
 }
+
+$(document).on('click', '.delete_data', function() {
+    var id = $(this).data('id');
+    $.ajax({
+        url: `/legislative/delete_data/${id}`,
+        type: 'POST',
+        headers: {
+            'X-CSRFToken': document.cookie.split('; ').find(c => c.startsWith('csrftoken')).split('=')[1],
+        },
+        success: function(response) {
+            if(response.status === "success") {
+                // Redraw the table
+                legislative_dataTable.draw();
+            } else {
+                // Handle error
+                console.error('Error deleting data');
+            }
+        },
+        error: function(error) {
+            // Handle error
+            console.error('Error deleting data', error);
+        }
+    });
+});
