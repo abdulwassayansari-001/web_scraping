@@ -454,14 +454,22 @@ function LegislativeDataTable() {
 
             { data: 'committee',  title: 'Committee',
                 render: function (data, type, row){
-                    return data ? data.name : '';
-                }    
+                    if (data) {
+                        return `<a href="${data.link}" target=_blank> ${data.name} </a>`;
+                        } else {
+                            return '';
+                        }   
+                }
             },
 
             { data: 'subcommittee',  title: 'Sub Committee',
-            render: function (data, type, row){
-                return data ? data.name : '';
-            }    
+                render: function (data, type, row){
+                    if (data) {
+                        return `<a href="${data.link}" target=_blank > ${data.name} </a>`;
+                        } else {
+                            return '';
+                        }   
+                }
             },
 
             { data: 'title',  title: 'Title',
