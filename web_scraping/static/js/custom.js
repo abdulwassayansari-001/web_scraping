@@ -435,13 +435,6 @@ function LegislativeDataTable() {
        pageLength: 100,  // Set the number of records per page
        columns: [
             { data: 'id',  title: 'ID' },
-            {
-                data: 'member',
-                title: 'Name',
-                render: function (data, type, row) {
-                    return data ? data.name : ''; // Safely access the member's name if the member data exists
-                }
-            },
 
             {
                 data: 'member',
@@ -449,6 +442,16 @@ function LegislativeDataTable() {
                 render: function (data, type, row) {
                     const imageUrl = `https://gov-finder.s3.amazonaws.com/images/${data.image_name}`;
                     return `<img style="width:80px;" src="${imageUrl}"/>`;
+                }
+            },
+
+            { data: 'member',  title: 'Name',
+                render: function (data, type, row){
+                    if (data) {
+                        return `<a style='white-space: nowrap;' href="${data.link}" target=_blank> ${data.name} </a>`;
+                        } else {
+                            return '';
+                        }   
                 }
             },
 

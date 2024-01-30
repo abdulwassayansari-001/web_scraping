@@ -71,6 +71,7 @@ def data_json(request):
                     'name': item.member.name,
                     'state': item.member.state,
                     'party': item.member.party,
+                    'link':item.member.link,
                     'image_name':item.member.image_name,
                 }
 
