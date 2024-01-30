@@ -10,9 +10,16 @@
     <title>Show Data</title>
 </head>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <body>
 
+    <nav>
 
+                <a class="nav-link {% if request.resolver_match.url_name == 'data' %}active{% endif %}" aria-current="page" href="{% url 'legislative:data' %}">Data</a>
+                <a class="nav-link {% if request.resolver_match.url_name == 'accepted' %}active{% endif %}" href="{% url 'legislative:upload_data' %}">Upload Data</a>
+                <a class="nav-link {% if request.resolver_match.url_name == 'rejected' %}active{% endif %}" href="{% url 'legislative:upload_member_csv' %}">Upload CSV</a>
+
+    </nav>
 
     <table id="legislative-table" class="legislative_data center table table-striped table-bordered">
 
