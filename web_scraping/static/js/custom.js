@@ -590,8 +590,8 @@ function LegislativeDataTable() {
            }
        ],
        lengthMenu: [
-           [ 100, 200, 500 ],
-           [ '100', '200', '500']
+           [ 100, 200, 500, 9999999 ],
+           [ '100', '200', '500', 'All']
        ],
        
        // Additional DataTable options can be added here
