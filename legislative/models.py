@@ -16,6 +16,26 @@ class Members(models.Model):
 
     def __str__(self):
         return self.name
+    
+class CombineData(models.Model):
+    name = models.CharField(max_length=512, null=False)
+    state = models.CharField(max_length=128, null=True, blank=True)
+    district = models.CharField(max_length=128, null=True, blank=True)
+    party = models.CharField(max_length=128, null=True, blank=True)
+    employer = models.CharField(max_length=128, null=True, blank=True)
+    email = models.EmailField(max_length=512, blank=True, null=True)
+    phone_number = models.CharField(max_length=512, blank=True, null=True)
+    address = models.CharField(max_length=512, blank=True, null=True)
+    desc = models.TextField(blank=True, null=True)
+    member_title = models.CharField(max_length=512, null=True, blank=True)
+    committee_title = models.CharField(max_length=512, null=True, blank=True)
+    committee = models.CharField(max_length=512, null=True, blank=True)
+    subcommittee = models.CharField(max_length=512, null=True, blank=True)
+    hierarchy = models.CharField(max_length=512, null=False)
+    image_name = models.TextField(blank=True, null=True)
+    subcommittee_link = models.CharField(max_length=1024, null=True, blank=True)
+    committee_link = models.CharField(max_length=1024, null=True, blank=True)
+    member_link = models.CharField(max_length=1024, blank=True, null=True)
 
 
 class Committees(models.Model):

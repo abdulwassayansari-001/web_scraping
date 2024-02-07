@@ -14,10 +14,20 @@
 <body>
 
     <nav>
-
-                <a class="nav-link {% if request.resolver_match.url_name == 'data' %}active{% endif %}" aria-current="page" href="{% url 'legislative:data' %}">Data</a>
-                <a class="nav-link {% if request.resolver_match.url_name == 'accepted' %}active{% endif %}" href="{% url 'legislative:upload_data' %}">Upload Data</a>
-                <a class="nav-link {% if request.resolver_match.url_name == 'rejected' %}active{% endif %}" href="{% url 'legislative:upload_member_csv' %}">Upload CSV</a>
+<ul>
+    <li>
+        <a aria-current="page" href="{% url 'legislative:data' %}">Senate/House Data</a>
+    </li>
+    <li>
+        <a aria-current="page" href="{% url 'legislative:combine_data' %}">Combine Data</a>
+    </li>
+    <li>
+        <a href="{% url 'legislative:upload_data' %}">Upload Data</a>
+    </li>
+    <li>
+        <a href="{% url 'legislative:upload_member_csv' %}">Upload CSV</a>
+    </li>
+</ul>
 
     </nav>
 

@@ -782,11 +782,11 @@ function CombineDataTable() {
             }    
             },
 
-            // { data: 'image_name',  title: 'image_name',
-            // render: function (data, type, row){
-            //     return data ? data.link : '';
-            // }    
-            // },
+            { data: 'image_name',  title: 'image_name',
+            render: function (data, type, row){
+                return data ? data : '';
+            }    
+            },
 
             { data: 'subcommittee_link',  title: 'subcommittee_link',
             render: function (data, type, row){

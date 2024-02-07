@@ -7,6 +7,11 @@ class CSVMemberForm(forms.ModelForm):
         model = Members
         fields = []
 
+class CombineDataForm(forms.ModelForm):
+    class Meta:
+        model = CombineData
+        fields = []
+
 
 class CSVCommitteeForm(forms.ModelForm):
     class Meta:
