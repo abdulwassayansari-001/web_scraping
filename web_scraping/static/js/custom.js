@@ -432,7 +432,7 @@ function LegislativeDataTable() {
            },
         },
        
-       pageLength: 100,  // Set the number of records per page
+       pageLength: 10,  // Set the number of records per page
        columns: [
             { data: 'id',  title: 'ID' },
 
@@ -473,19 +473,12 @@ function LegislativeDataTable() {
             }    
             },
 
-            { data: 'member',  title: 'Member Title',
-            render: function (data, type, row){
-                return data ? data.member_title : '';
-            }    
-            },
-
             { data: 'member',  title: 'Employer',
             render: function (data, type, row){
                 return data ? data.employer : '';
             }    
-            },
-
-
+        },
+        
             { data: 'member',  title: 'Email',
             render: function (data, type, row){
                 return data ? data.email : '';
@@ -511,6 +504,13 @@ function LegislativeDataTable() {
                 return data ? data.desc : '';
             }    
             },
+
+            { data: 'member',  title: 'Member Title',
+            render: function (data, type, row){
+                return data ? data.member_title : '';
+            }    
+            },
+
             
             { data: 'title',  title: 'Committee Title',
             render: function (data, type, row){
@@ -545,7 +545,13 @@ function LegislativeDataTable() {
             }    
             },
 
-            { data: 'member',  title: 'member_link',
+            { data: 'member',  title: 'image_name',
+            render: function (data, type, row){
+                return data ? data.link : '';
+            }    
+            },
+
+            { data: 'subcommittee',  title: 'subcommittee_link',
             render: function (data, type, row){
                 return data ? data.link : '';
             }    
@@ -556,8 +562,8 @@ function LegislativeDataTable() {
                 return data ? data.link : '';
             }    
             },
-
-            { data: 'subcommittee',  title: 'subcommittee_link',
+            
+            { data: 'member',  title: 'member_link',
             render: function (data, type, row){
                 return data ? data.link : '';
             }    
@@ -590,8 +596,8 @@ function LegislativeDataTable() {
            }
        ],
        lengthMenu: [
-           [ 100, 200, 500, 9999999 ],
-           [ '100', '200', '500', 'All']
+           [ 10, 200, 500, 9999999 ],
+           [ '10', '200', '500', 'All']
        ],
        
        // Additional DataTable options can be added here
