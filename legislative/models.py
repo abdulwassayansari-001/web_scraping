@@ -5,6 +5,7 @@ class Members(models.Model):
     state = models.CharField(max_length=128, null=True, blank=True)
     district = models.CharField(max_length=128, null=True, blank=True)
     party = models.CharField(max_length=128, null=True, blank=True)
+    member_title = models.CharField(max_length=512, null=True, blank=True)
     employer = models.CharField(max_length=128, null=True, blank=True)
     email = models.EmailField(max_length=512, blank=True, null=True)
     phone_number = models.CharField(max_length=512, blank=True, null=True)

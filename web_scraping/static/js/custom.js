@@ -455,6 +455,70 @@ function LegislativeDataTable() {
                 }
             },
 
+            { data: 'member',  title: 'State',
+            render: function (data, type, row){
+                return data ? data.state : '';
+            }    
+            },
+
+            { data: 'member',  title: 'District',
+            render: function (data, type, row){
+                return data ? data.district : '';
+            }    
+            },
+
+            { data: 'member',  title: 'Party',
+            render: function (data, type, row){
+                return data ? data.party : '';
+            }    
+            },
+
+            { data: 'member',  title: 'Member Title',
+            render: function (data, type, row){
+                return data ? data.member_title : '';
+            }    
+            },
+
+            { data: 'member',  title: 'Employer',
+            render: function (data, type, row){
+                return data ? data.employer : '';
+            }    
+            },
+
+
+            { data: 'member',  title: 'Email',
+            render: function (data, type, row){
+                return data ? data.email : '';
+            }    
+            },
+
+
+            { data: 'member',  title: 'Phone',
+            render: function (data, type, row){
+                return data ? data.phone : '';
+            }    
+            },
+
+
+            { data: 'member',  title: 'Address',
+            render: function (data, type, row){
+                return data ? data.address : '';
+            }    
+            },
+
+            { data: 'member',  title: 'Description',
+            render: function (data, type, row){
+                return data ? data.desc : '';
+            }    
+            },
+            
+            { data: 'title',  title: 'Title',
+            render: function (data, type, row){
+                return data ? data.name : '';
+            }    
+            },
+            
+
             { data: 'committee',  title: 'Committee',
                 render: function (data, type, row){
                     if (data) {
@@ -475,15 +539,27 @@ function LegislativeDataTable() {
                 }
             },
 
-            { data: 'title',  title: 'Title',
+            { data: 'hierarchy',  title: 'Hierarchy',
             render: function (data, type, row){
                 return data ? data.name : '';
             }    
             },
 
-            { data: 'hierarchy',  title: 'Hierarchy',
+            { data: 'member',  title: 'member_link',
             render: function (data, type, row){
-                return data ? data.name : '';
+                return data ? data.link : '';
+            }    
+            },
+
+            { data: 'committee',  title: 'committee_link',
+            render: function (data, type, row){
+                return data ? data.link : '';
+            }    
+            },
+
+            { data: 'subcommittee',  title: 'subcommittee_link',
+            render: function (data, type, row){
+                return data ? data.link : '';
             }    
             },
 

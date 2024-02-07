@@ -70,7 +70,14 @@ def data_json(request):
                     'id': item.member.id,
                     'name': item.member.name,
                     'state': item.member.state,
+                    'district': item.member.district,
                     'party': item.member.party,
+                    'member_title': item.member.member_title,
+                    'employer': item.member.employer,
+                    'email': item.member.email,
+                    'phone': item.member.phone_number,
+                    'address': item.member.address,
+                    'desc': item.member.desc,
                     'link':item.member.link,
                     'image_name':item.member.image_name,
                 }
@@ -148,13 +155,14 @@ def upload_member_csv(request):
                     existing_record.state = row[1]
                     existing_record.district = row[2]
                     existing_record.party = row[3]
-                    existing_record.employer = row[4]
-                    existing_record.email = row[5]
-                    existing_record.phone_number = row[6]
-                    existing_record.address = row[7]
-                    existing_record.desc = row[8]
-                    existing_record.image_name = row[9]
-                    existing_record.link = row[10]
+                    existing_record.member_title = row[4]
+                    existing_record.employer = row[5]
+                    existing_record.email = row[6]
+                    existing_record.phone_number = row[7]
+                    existing_record.address = row[8]
+                    existing_record.desc = row[9]
+                    existing_record.image_name = row[10]
+                    existing_record.link = row[11]
                     existing_record.save()
                 else:
                     # Create a new instance of DataScrap with appropriate field values
