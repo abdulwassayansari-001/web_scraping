@@ -512,7 +512,7 @@ function LegislativeDataTable() {
             }    
             },
             
-            { data: 'title',  title: 'Title',
+            { data: 'title',  title: 'Committee Title',
             render: function (data, type, row){
                 return data ? data.name : '';
             }    
