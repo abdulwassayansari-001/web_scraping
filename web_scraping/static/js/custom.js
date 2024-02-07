@@ -5,6 +5,7 @@ let acceptedDataElement = null
 let rejectedDataElement = null
 let dataTable;
 let legislative_dataTable;
+let combine_dataTable;
 
 $(document).ready(function () {
     // Initially display the loader when the page loads
@@ -16,6 +17,7 @@ $(document).ready(function () {
     var accepted_data_class = document.querySelector('.accepted_data');
     var rejected_data_class = document.querySelector('.rejected_data');
     var legislative_data_class = document.querySelector('.legislative_data');
+    var combine_data_class = document.querySelector('.combine_data');
     // var accepted_data_modification = document.querySelector('.accepted_data_modification');
 
     // Check if the element with the target class exists on the page
@@ -42,6 +44,12 @@ $(document).ready(function () {
         // Your code to run when the class is present on this page
         console.log('Legislative Data');
         LegislativeDataTable();
+    }
+
+    if (combine_data_class) {
+        // Your code to run when the class is present on this page
+        console.log('Combine Data');
+        CombineDataTable();
     }
 
 
@@ -547,7 +555,7 @@ function LegislativeDataTable() {
 
             { data: 'member',  title: 'image_name',
             render: function (data, type, row){
-                return data ? data.link : '';
+                return data ? data.image_name : '';
             }    
             },
 
@@ -562,7 +570,7 @@ function LegislativeDataTable() {
                 return data ? data.link : '';
             }    
             },
-            
+
             { data: 'member',  title: 'member_link',
             render: function (data, type, row){
                 return data ? data.link : '';
@@ -596,8 +604,8 @@ function LegislativeDataTable() {
            }
        ],
        lengthMenu: [
-           [ 10, 200, 500, 9999999 ],
-           [ '10', '200', '500', 'All']
+           [ 100, 200, 500, 9999999 ],
+           [ '100', '200', '500', 'All']
        ],
        
        // Additional DataTable options can be added here
@@ -630,6 +638,235 @@ $(document).on('click', '.delete_data', function() {
             if(response.status === "success") {
                 // Redraw the table
                 legislative_dataTable.draw();
+            } else {
+                // Handle error
+                console.error('Error deleting data');
+            }
+        },
+        error: function(error) {
+            // Handle error
+            console.error('Error deleting data', error);
+        }
+    });
+});
+
+
+
+
+
+
+// Function to initialize DataTable
+function CombineDataTable() {
+
+    // Destroy existing DataTable if it exists
+    if (combine_dataTable) {
+        combine_dataTable.destroy();
+   }
+
+   // Get CSRF token
+   const csrftoken = getCookie('csrftoken');
+   combine_dataTable = $('#combine-table').DataTable({
+       "dom": '<"top"Bf<"clear">><"top"lip<"clear">>rt<"bottom"<"clear">>',
+       // autoWidth: false,
+       scrollX: true,
+       serverSide: true,
+       orderCellsTop: true,
+       rowReorder: true,
+       ajax: {
+           url: `/legislative/combine_data_json/`,
+           type: 'POST',
+           dataType: 'json',
+           headers: {
+               'X-CSRFToken': csrftoken
+           },
+        },
+       
+       pageLength: 100,  // Set the number of records per page
+       columns: [
+            { data: 'id',  title: 'ID' },
+
+            {
+                data: 'image_name',
+                title: 'Image',
+                render: function (data, type, row) {
+                    const imageUrl = `https://gov-finder.s3.amazonaws.com/images/${data}`;
+                    return `<img style="width:80px;" src="${imageUrl}"/>`;
+                }
+            },
+
+            { data: 'name',  title: 'Name',
+                render: function (data, type, row){
+                    return data ? data : '';
+                }
+            },
+
+            { data: 'state',  title: 'State',
+            render: function (data, type, row){
+                return data ? data : '';
+            }    
+            },
+
+            { data: 'district',  title: 'District',
+            render: function (data, type, row){
+                return data ? data : '';
+            }    
+            },
+
+            { data: 'party',  title: 'Party',
+            render: function (data, type, row){
+                return data ? data : '';
+            }    
+            },
+
+            { data: 'employer',  title: 'Employer',
+            render: function (data, type, row){
+                return data ? data : '';
+            }    
+        },
+        
+            { data: 'email',  title: 'Email',
+            render: function (data, type, row){
+                return data ? data : '';
+            }    
+            },
+
+
+            { data: 'phone_number',  title: 'Phone',
+            render: function (data, type, row){
+                return data ? data : '';
+            }    
+            },
+
+
+            { data: 'address',  title: 'Address',
+            render: function (data, type, row){
+                return data ? data : '';
+            }    
+            },
+
+            { data: 'desc',  title: 'Description',
+            render: function (data, type, row){
+                return data ? data : '';
+            }    
+            },
+
+            { data: 'member_title',  title: 'Member Title',
+            render: function (data, type, row){
+                return data ? data : '';
+            }    
+            },
+
+            
+            { data: 'committee_title',  title: 'Committee Title',
+            render: function (data, type, row){
+                return data ? data : '';
+            }    
+            },
+            
+
+            { data: 'committee',  title: 'Committee',
+                render: function (data, type, row){
+                    return data ? data : '';
+                }
+            },
+
+            { data: 'subcommittee',  title: 'Sub Committee',
+                render: function (data, type, row){
+                    return data ? data : ''; 
+                }
+            },
+
+            { data: 'hierarchy',  title: 'Hierarchy',
+            render: function (data, type, row){
+                return data ? data : '';
+            }    
+            },
+
+            // { data: 'image_name',  title: 'image_name',
+            // render: function (data, type, row){
+            //     return data ? data.link : '';
+            // }    
+            // },
+
+            { data: 'subcommittee_link',  title: 'subcommittee_link',
+            render: function (data, type, row){
+                return data ? data : '';
+            }    
+            },
+
+            { data: 'committee_link',  title: 'committee_link',
+            render: function (data, type, row){
+                return data ? data : '';
+            }    
+            },
+
+            { data: 'member_link',  title: 'member_link',
+            render: function (data, type, row){
+                return data ? data : '';
+            }    
+            },
+
+            // { data: 'id', title: 'Delete',
+            // render: function (data, type, row){
+            //     return `<button class="delete_data btn btn-danger" data-id="${data}">Delete</button>`;
+            // }    
+            // },
+       ],
+
+       // Include the searchHighlight extension
+       searchHighlight: true,
+       search: {
+           regex: true,  // Disable regular expression search
+           smart: false,  // Disable smart search
+           caseInsensitive: true  // Make the search case-insensitive
+       },
+       buttons: [
+           {
+               extend: 'colvis',
+               columns: ':not(.noVis)'
+               
+           },
+           {
+               extend: 'excel',
+               text: 'Download File'
+               // Add more buttons or options as needed
+           }
+       ],
+       lengthMenu: [
+           [ 100, 200, 500, 9999999 ],
+           [ '100', '200', '500', 'All']
+       ],
+       
+       // Additional DataTable options can be added here
+       
+       initComplete: function() {
+        combine_dataTable.draw();
+       }
+
+       
+   });
+
+       // Add the draw event listener for search highlighting
+       combine_dataTable.on('draw', function () {
+        console.log('Combine DataTable initialized.');
+        var body = $(combine_dataTable.table().body());
+        body.unhighlight();
+        body.highlight(combine_dataTable.search());
+    });
+}
+
+$(document).on('click', '.delete_data', function() {
+    var id = $(this).data('id');
+    $.ajax({
+        url: `/legislative/delete_data/${id}`,
+        type: 'POST',
+        headers: {
+            'X-CSRFToken': document.cookie.split('; ').find(c => c.startsWith('csrftoken')).split('=')[1],
+        },
+        success: function(response) {
+            if(response.status === "success") {
+                // Redraw the table
+                combine_dataTable.draw();
             } else {
                 // Handle error
                 console.error('Error deleting data');
