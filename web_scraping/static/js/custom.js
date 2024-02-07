@@ -440,7 +440,7 @@ function LegislativeDataTable() {
            },
         },
        
-       pageLength: 10,  // Set the number of records per page
+       pageLength: 100,  // Set the number of records per page
        columns: [
             { data: 'id',  title: 'ID' },
 
