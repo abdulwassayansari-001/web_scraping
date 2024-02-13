@@ -510,7 +510,8 @@ function LegislativeDataTable() {
             { data: 'member',  title: 'Description',
             render: function (data, type, row){
                 return data ? data.desc : '';
-            }    
+            },
+            width: '1000px'
             },
 
             { data: 'member',  title: 'Member Title',
@@ -748,7 +749,7 @@ function CombineDataTable() {
             render: function (data, type, row){
                 return data ? data : '';
             },
-            width: '1000px' // Adjust the width as needed
+            width: '1000px'
             },
 
             { data: 'member_title',  title: 'Member Title',
