@@ -747,7 +747,8 @@ function CombineDataTable() {
             { data: 'desc',  title: 'Description',
             render: function (data, type, row){
                 return data ? data : '';
-            }    
+            },
+            width: '1000px' // Adjust the width as needed
             },
 
             { data: 'member_title',  title: 'Member Title',
