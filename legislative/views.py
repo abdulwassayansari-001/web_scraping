@@ -451,7 +451,9 @@ def delete_data(request, id):
 
 
 
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
 def combine_data_json(request):
     try:
         draw = int(request.POST.get('draw', 1))
