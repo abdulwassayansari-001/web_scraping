@@ -342,3 +342,8 @@ div.dataTables_wrapper div.dataTables_info{
   font-size: 14px !important;
   height: 100px;
 }
+
+.container_datatable{
+  width: 1400px;
+  margin: 0 auto 0 0;
+}

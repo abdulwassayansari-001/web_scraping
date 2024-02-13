@@ -666,7 +666,7 @@ function CombineDataTable() {
    // Get CSRF token
    const csrftoken = getCookie('csrftoken');
    combine_dataTable = $('#combine-table').DataTable({
-       "dom": '<"top"Bf<"clear">><"top"lip<"clear">>rt<"bottom"<"clear">>',
+       "dom": '<"container_datatable top"Bf<"clear">><"container_datatable top"lip<"clear">>rt<"bottom"<"clear">>',
        // autoWidth: false,
        scrollX: true,
        serverSide: true,
