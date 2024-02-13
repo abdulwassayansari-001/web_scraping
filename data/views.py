@@ -7,9 +7,7 @@ from django.forms.models import model_to_dict
 from django.views import View
 from .forms import CSVUploadForm, FeedbackForm
 import csv
-import os
-import zipfile
-import tempfile
+from django.views.decorators.csrf import csrf_exempt
 
 def data(request):
     return render(request, 'data/data.html')
@@ -40,6 +38,7 @@ from django.db.models import Q
 
 logger = logging.getLogger(__name__)
 
+@csrf_exempt
 def get_data(request, validation_status=None):
     try:
         if request.method == 'POST':

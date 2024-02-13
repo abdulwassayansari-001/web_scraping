@@ -13,29 +13,33 @@
 
 <body>
 
-    <nav>
-        <ul>
-            <li>
-                <a aria-current="page" href="{% url 'legislative:data' %}">Senate/House Data</a>
-            </li>
-            <li>
-                <a aria-current="page" href="{% url 'legislative:combine_data' %}">Combine Data</a>
-            </li>
-            <li>
-                <a href="{% url 'legislative:upload_data' %}">Upload Data</a>
-            </li>
-            <li>
-                <a href="{% url 'legislative:upload_member_csv' %}">Upload CSV</a>
-            </li>
-        </ul>
+    <div class="container">
+
         
-            </nav>
-
-    <table id="combine-table" class="combine_data center table table-striped table-bordered">
-
-
-    </table>
-
+        <nav>
+            <ul>
+                <li>
+                    <a aria-current="page" href="{% url 'legislative:data' %}">Senate/House Data</a>
+                </li>
+                <li>
+                    <a aria-current="page" href="{% url 'legislative:combine_data' %}">Combine Data</a>
+                </li>
+                <li>
+                    <a href="{% url 'legislative:upload_data' %}">Upload Data</a>
+                </li>
+                <li>
+                    <a href="{% url 'legislative:upload_member_csv' %}">Upload CSV</a>
+                </li>
+            </ul>
+            
+        </nav>
+        
+        <table id="combine-table" class="combine_data center table table-striped table-bordered">
+            
+            
+        </table>
+        
+    </div>
 </body>
 </html>
 

@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 def success_page(request):
     return render(request, 'legislative/success_page.html')
 
-
+@csrf_exempt
 def data(request):
     return render(request, 'data.html')
 

@@ -4,6 +4,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,30 +14,35 @@
 
 <body>
 
-    <nav>
-<ul>
-    <li>
-        <a aria-current="page" href="{% url 'legislative:data' %}">Senate/House Data</a>
-    </li>
-    <li>
-        <a aria-current="page" href="{% url 'legislative:combine_data' %}">Combine Data</a>
-    </li>
-    <li>
-        <a href="{% url 'legislative:upload_data' %}">Upload Data</a>
-    </li>
-    <li>
-        <a href="{% url 'legislative:upload_member_csv' %}">Upload CSV</a>
-    </li>
-</ul>
-
-    </nav>
-
-    <table id="legislative-table" class="legislative_data center table table-striped table-bordered">
+    <div class="container">
 
 
-    </table>
+        <nav>
+            <ul>
+                <li>
+                    <a aria-current="page" href="{% url 'legislative:data' %}">Senate/House Data</a>
+                </li>
+                <li>
+                    <a aria-current="page" href="{% url 'legislative:combine_data' %}">Combine Data</a>
+                </li>
+                <li>
+                    <a href="{% url 'legislative:upload_data' %}">Upload Data</a>
+                </li>
+                <li>
+                    <a href="{% url 'legislative:upload_member_csv' %}">Upload CSV</a>
+                </li>
+            </ul>
 
+        </nav>
+
+        <table id="legislative-table" class="legislative_data center table table-striped table-bordered">
+
+
+        </table>
+
+    </div>
 </body>
+
 </html>
 
 
