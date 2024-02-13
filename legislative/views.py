@@ -6,6 +6,8 @@ from django.core.paginator import Paginator, EmptyPage
 from django.db.models import Q
 from django.http import JsonResponse
 import logging
+from django.views.decorators.csrf import csrf_exempt
+
 logger = logging.getLogger(__name__)
 
 
@@ -17,7 +19,7 @@ def data(request):
     return render(request, 'data.html')
 
 
-
+@csrf_exempt
 def data_json(request):
     try:
         draw = int(request.POST.get('draw', 1))
@@ -450,8 +452,6 @@ def delete_data(request, id):
   return JsonResponse({"status": "success"})
 
 
-
-from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def combine_data_json(request):
