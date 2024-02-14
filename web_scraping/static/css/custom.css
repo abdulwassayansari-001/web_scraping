@@ -186,11 +186,13 @@ nav{
     font-size: 15px;
     text-align: center !important;
 }
-.container{
-  width: 100% !important;
-  /* margin: 10px 0px 0px 10px !important; */
-  margin: 0 auto !important;
-  max-width: 1400px !important;
+.contain{
+  /* width: 100% !important; */
+  width: 98vw;
+  /* margin: 20px 0 20px 20px !important; */
+  padding: 10px;
+  /* margin: 0 auto !important; */
+  /* max-width: 1400px !important; */
 }
 #leadership-table_wrapper{
   margin-top: 20px;

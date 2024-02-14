@@ -425,7 +425,7 @@ function LegislativeDataTable() {
    // Get CSRF token
    const csrftoken = getCookie('csrftoken');
    legislative_dataTable = $('#legislative-table').DataTable({
-       "dom": '<"top"Bf<"clear">><"top"lip<"clear">>rt<"bottom"<"clear">>',
+       "dom": '<"top"Bf<"clear">><"top"lip<"clear">>rt<"bottom"ip<"clear">>',
        // autoWidth: false,
        scrollX: true,
        serverSide: true,
@@ -608,6 +608,12 @@ function LegislativeDataTable() {
            [ 100, 200, 500, 9999999 ],
            [ '100', '200', '500', 'All']
        ],
+
+       columnDefs: [
+        {
+            targets: 10,
+            className: 'truncate'
+        }],
        
        // Additional DataTable options can be added here
        
@@ -667,7 +673,7 @@ function CombineDataTable() {
    // Get CSRF token
    const csrftoken = getCookie('csrftoken');
    combine_dataTable = $('#combine-table').DataTable({
-       "dom": '<"container_datatable top"Bf<"clear">><"container_datatable top"lip<"clear">>rt<"bottom"<"clear">>',
+       "dom": '<"top"Bf<"clear">><"top"lip<"clear">>rt<"bottom"ip<"clear">>',
        // autoWidth: false,
        scrollX: true,
        serverSide: true,
@@ -691,7 +697,7 @@ function CombineDataTable() {
                 title: 'Image',
                 render: function (data, type, row) {
                     const imageUrl = `https://gov-finder.s3.amazonaws.com/images/${data}`;
-                    return `<img style="width:80px;" src="${imageUrl}"/>`;
+                    return `<img style="width:80px;" src="${imageUrl}" onerror="this.src='${placeholderImg}'" />`;
                 }
             },
 
