@@ -186,6 +186,12 @@ nav{
     font-size: 15px;
     text-align: center !important;
 }
+.container{
+  width: 100% !important;
+  margin: 0 auto !important;
+  max-width: 1400px !important;
+}
+
 .contain{
   /* width: 100% !important; */
   width: 98vw;

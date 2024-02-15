@@ -208,8 +208,8 @@ function initDataTable(validationStatus, modification) {
             }
         ],
         lengthMenu: [
-            [ 100, 200, 500 ],
-            [ '100', '200', '500']
+            [ 100, 200, 500, 999999 ],
+            [ '100', '200', '500', 'All']
         ],
         
         // Additional DataTable options can be added here
