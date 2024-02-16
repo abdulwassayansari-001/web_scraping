@@ -578,11 +578,11 @@ function LegislativeDataTable() {
             }    
             },
 
-            { data: 'id', title: 'Delete',
-            render: function (data, type, row){
-                return `<button class="delete_data btn btn-danger" data-id="${data}">Delete</button>`;
-            }    
-            },
+            // { data: 'id', title: 'Delete',
+            // render: function (data, type, row){
+            //     return `<button class="delete_data btn btn-danger" data-id="${data}">Delete</button>`;
+            // }    
+            // },
        ],
 
        // Include the searchHighlight extension
